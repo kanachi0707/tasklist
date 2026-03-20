@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>統計 - The Mindful Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f9f9fb",
+              "on-primary-fixed": "#280056",
+              "secondary-fixed-dim": "#d5bbff",
+              "inverse-primary": "#d7baff",
+              "surface-container-low": "#f3f3f5",
+              "on-secondary-fixed": "#270058",
+              "on-secondary-container": "#533387",
+              "inverse-surface": "#2f3132",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-fixed": "#ecdcff",
+              "tertiary": "#391900",
+              "primary": "#310065",
+              "on-background": "#1a1c1d",
+              "surface-variant": "#e2e2e4",
+              "primary-container": "#4a148c",
+              "on-surface-variant": "#4a4452",
+              "secondary-container": "#c5a3ff",
+              "on-tertiary-fixed": "#301400",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#6c3a0d",
+              "surface-bright": "#f9f9fb",
+              "inverse-on-surface": "#f0f0f2",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#7345b6",
+              "error": "#ba1a1a",
+              "tertiary-container": "#592b00",
+              "surface-dim": "#d9dadc",
+              "error-container": "#ffdad6",
+              "on-primary-container": "#b889ff",
+              "on-primary": "#ffffff",
+              "surface": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#ffb782",
+              "surface-container": "#edeef0",
+              "primary-fixed": "#eddcff",
+              "outline": "#7c7483",
+              "on-surface": "#1a1c1d",
+              "primary-fixed-dim": "#d7baff",
+              "on-secondary-fixed-variant": "#543589",
+              "tertiary-fixed": "#ffdcc5",
+              "outline-variant": "#cdc3d4",
+              "surface-container-highest": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "secondary": "#6d4ea2",
+              "on-tertiary-container": "#d5915e",
+              "surface-container-high": "#e8e8ea"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "Noto Sans JP"],
+              "body": ["Inter", "Noto Sans JP"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .headline-lg { font-size: 2rem; line-height: 1.2; }
+        .tonal-shift-surface-container-low { background-color: rgba(243, 247, 245, 0.7); }
+        .tonal-transition { transition: background-color 0.3s ease; }
+        body { background-color: #f9f9fb; color: #1a1c1d; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body antialiased">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl no-border tonal-shift-surface-container-low">
+<div class="flex items-center gap-4">
+<button class="p-2 text-purple-900 dark:text-purple-100 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline headline-lg font-bold tracking-tight text-purple-900 dark:text-purple-100">統計</h1>
+</div>
+<div class="flex items-center">
+<button class="p-2 text-purple-900 dark:text-purple-100 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors rounded-full active:scale-95">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto space-y-8">
+<!-- Hero: Productivity Score -->
+<section class="relative overflow-hidden bg-primary-container rounded-xl p-8 text-white shadow-xl">
+<div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<p class="text-sm font-label tracking-widest opacity-80 uppercase">Productivity Score</p>
+<div class="flex items-baseline gap-2 mt-2">
+<span class="text-7xl font-headline font-extrabold tracking-tighter">84</span>
+<span class="text-2xl font-headline font-bold opacity-70">/100</span>
+</div>
+<p class="mt-4 text-secondary-container font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                    先週より12%向上しました
+                </p>
+</div>
+<!-- Decorative Japanese Kanji as Ghost Element -->
+<div class="absolute bottom-[-20%] right-[-5%] text-white/5 text-[12rem] font-bold pointer-events-none select-none">
+                集中
+            </div>
+</section>
+<!-- Insights Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Weekly Progress Ring -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex items-center justify-between">
+<div>
+<h3 class="text-on-surface-variant text-sm font-semibold mb-1">今週の完了数</h3>
+<p class="text-3xl font-headline font-bold text-primary">32 <span class="text-sm font-normal text-on-surface-variant">タスク</span></p>
+</div>
+<div class="relative w-20 h-20">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-low" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="64" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-primary">70%</div>
+</div>
+</div>
+<!-- Best Day Insight -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-container/30 text-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+</div>
+<div>
+<h3 class="text-on-surface-variant text-sm font-semibold mb-1">最も生産的な日</h3>
+<p class="text-xl font-headline font-bold">火曜日</p>
+<p class="text-xs text-on-surface-variant opacity-70 mt-1">平均 8.4 タスク完了</p>
+</div>
+</div>
+</div>
+<!-- Activity Chart (Custom Bar Chart Style) -->
+<section class="bg-surface-container-low rounded-xl p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-xl font-headline font-bold text-primary">アクティビティ</h2>
+<p class="text-sm text-on-surface-variant">過去7日間の推移</p>
+</div>
+<div class="flex gap-1 text-[10px] font-bold text-on-surface-variant">
+<span class="px-2 py-1 bg-surface-container-highest rounded">日</span>
+<span class="px-2 py-1 bg-primary text-white rounded">週</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded">月</span>
+</div>
+</div>
+<div class="flex items-end justify-between h-40 gap-2">
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 60%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">月</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container rounded-t-lg transition-all" style="height: 90%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">火</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 45%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">水</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 75%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">木</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 30%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">金</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 20%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">土</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-surface-container-highest rounded-t-lg transition-all hover:bg-primary-container" style="height: 15%"></div>
+<span class="text-[10px] font-medium text-on-surface-variant">日</span>
+</div>
+</div>
+</section>
+<!-- Category Breakdown -->
+<section class="space-y-4">
+<h2 class="text-lg font-headline font-bold text-on-surface px-2">カテゴリー別内訳</h2>
+<div class="space-y-3">
+<!-- Row 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-10 bg-purple-600 rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">仕事・プロジェクト</p>
+<p class="text-xs text-on-surface-variant">14 タスク完了</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-bold text-purple-800">45%</p>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-10 bg-purple-300 rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">プライベート</p>
+<p class="text-xs text-on-surface-variant">9 タスク完了</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-bold text-purple-400">28%</p>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl flex items-center justify-between group hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-2 h-10 bg-slate-200 rounded-full"></div>
+<div>
+<p class="font-bold text-on-surface">健康・フィットネス</p>
+<p class="text-xs text-on-surface-variant">5 タスク完了</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline font-bold text-slate-400">16%</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Focus Insight Card -->
+<div class="bg-white rounded-xl p-6 shadow-sm border border-purple-50 flex gap-6 items-start">
+<div class="flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<div class="space-y-2">
+<h3 class="font-bold text-primary">マインドフルな洞察</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                    午後の時間帯（14:00〜16:00）に最も多くのタスクが完了しています。この時間帯に重要なプロジェクトを配置することで、さらなる生産性の向上が期待できます。
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/75 dark:bg-slate-900/75 backdrop-blur-2xl no-border tonal-transition shadow-[0_-4px_20px_rgba(0,0,0,0.04)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-1.5 transition-colors hover:text-purple-600" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="check_circle">check_circle</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">タスク</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-1.5 transition-colors hover:text-purple-600" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="calendar_month">calendar_month</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">カレンダー</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-purple-100 dark:bg-purple-900/40 text-purple-900 dark:text-purple-100 rounded-2xl px-5 py-1.5" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="bar_chart" style="font-variation-settings: 'FILL' 1;">bar_chart</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">統計</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-1.5 transition-colors hover:text-purple-600" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="settings">settings</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">設定</span>
+</a>
+</nav>
+</body></html>

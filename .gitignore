@@ -1,0 +1,6 @@
+config.php
+.vs/
+*.zip
+node_modules/
+Thumbs.db
+Desktop.ini

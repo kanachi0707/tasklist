@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&amp;family=Noto+Sans+JP:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#f6d9ff",
+              "surface-container-low": "#271332",
+              "on-tertiary-fixed-variant": "#633f00",
+              "on-surface-variant": "#cdc3d6",
+              "surface-container-lowest": "#190523",
+              "on-tertiary-container": "#3c2500",
+              "inverse-primary": "#7735d4",
+              "error-container": "#93000a",
+              "inverse-on-surface": "#3e2848",
+              "on-primary": "#430089",
+              "surface-dim": "#1e0a29",
+              "surface-container-highest": "#422c4c",
+              "on-tertiary-fixed": "#291800",
+              "on-secondary-container": "#c6a5ff",
+              "primary-fixed": "#ecdcff",
+              "surface-bright": "#473151",
+              "secondary": "#d5bbff",
+              "on-primary-container": "#3a0079",
+              "on-error": "#690005",
+              "tertiary-fixed-dim": "#ffb950",
+              "secondary-fixed-dim": "#d5bbff",
+              "outline-variant": "#4b4454",
+              "on-surface": "#f6d9ff",
+              "error": "#ffb4ab",
+              "tertiary-fixed": "#ffddb3",
+              "tertiary-container": "#c38417",
+              "on-background": "#f6d9ff",
+              "background": "#1e0a29",
+              "on-tertiary": "#452b00",
+              "surface-variant": "#422c4c",
+              "primary-fixed-dim": "#d6baff",
+              "on-secondary-fixed-variant": "#543589",
+              "primary": "#d6baff",
+              "on-secondary": "#3d1c70",
+              "surface": "#1e0a29",
+              "secondary-fixed": "#ecdcff",
+              "on-secondary-fixed": "#270058",
+              "on-primary-fixed-variant": "#5f0bbb",
+              "surface-container-high": "#372241",
+              "outline": "#968da0",
+              "on-error-container": "#ffdad6",
+              "primary-container": "#aa73ff",
+              "tertiary": "#ffb950",
+              "on-primary-fixed": "#280057",
+              "surface-container": "#2c1736",
+              "surface-tint": "#d6baff",
+              "secondary-container": "#543589"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "Noto Sans JP"],
+              "body": ["Manrope", "Noto Sans JP"],
+              "label": ["Manrope", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #1e0a29;
+            color: #cdc3d6;
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #d6baff 0%, #aa73ff 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e0a29;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #422c4c;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary/30">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 left-0 sticky bg-[#271332] flex flex-col p-6 space-y-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-50">
+<div class="mb-8 px-2">
+<h1 class="text-2xl font-black text-[#d6baff] tracking-tighter">Nocturne</h1>
+<p class="font-['Manrope'] uppercase tracking-widest text-[0.75rem] text-[#cdc3d6] opacity-60">Deep Focus</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Tasks Tab (Active) -->
+<a class="flex items-center space-x-3 px-4 py-3 bg-[#d6baff] text-[#430089] rounded-lg font-bold duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[0.75rem]">Tasks</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-[#cdc3d6] hover:bg-[#2c1736] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[0.75rem]">Calendar</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-[#cdc3d6] hover:bg-[#2c1736] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[0.75rem]">Statistics</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 text-[#cdc3d6] hover:bg-[#2c1736] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[0.75rem]">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6">
+<button class="w-full py-4 signature-gradient text-[#430089] font-bold rounded-lg flex items-center justify-center space-x-2 shadow-lg hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-['Manrope'] uppercase tracking-widest text-[0.75rem]">New Task</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky bg-[#1e0a29]/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 z-40">
+<div class="flex items-center space-x-8">
+<span class="text-xl font-bold text-[#f6d9ff] font-['Manrope'] tracking-tight">Murasaki Task</span>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-[#cdc3d6] text-sm">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-1.5 pl-10 pr-4 text-sm w-64 focus:ring-1 focus:ring-primary transition-all" placeholder="タスクを検索..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-6">
+<div class="flex space-x-4">
+<button class="text-[#cdc3d6] hover:text-[#f6d9ff] transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#cdc3d6] hover:text-[#f6d9ff] transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<section class="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
+<!-- Weekly Dashboard & Deep Work Card (Asymmetric Layout) -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Weekly Productivity -->
+<div class="col-span-8 bg-surface-container rounded-xl p-8 relative overflow-hidden flex flex-col justify-between min-h-[320px]">
+<div class="relative z-10">
+<span class="text-xs font-bold tracking-[0.2em] text-tertiary uppercase mb-2 block">Weekly Insight</span>
+<h2 class="text-3xl font-bold text-on-surface mb-6 tracking-tight">週間生産性分析</h2>
+<div class="flex items-end space-x-4 h-32">
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[40%]"></div>
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[65%]"></div>
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[55%]"></div>
+<div class="w-full signature-gradient rounded-t-md h-[90%] shadow-[0_0_20px_rgba(214,186,255,0.3)]"></div>
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[45%]"></div>
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[30%]"></div>
+<div class="w-full bg-surface-variant/30 rounded-t-md h-[20%]"></div>
+</div>
+<div class="flex justify-between text-[10px] uppercase tracking-widest text-on-surface-variant mt-4 font-bold">
+<span>Mon</span><span>Tue</span><span>Wed</span><span class="text-primary">Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<div class="mt-4 flex items-center space-x-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">ST</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container bg-primary-container flex items-center justify-center text-[10px] font-bold text-on-primary">JS</div>
+</div>
+<p class="text-sm text-on-surface-variant">チームの達成率: <span class="text-on-surface font-bold">84%</span></p>
+</div>
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-[80px]"></div>
+</div>
+<!-- Deep Work Status Card -->
+<div class="col-span-4 bg-[#430089] rounded-xl p-8 flex flex-col justify-center items-center text-center shadow-2xl relative group cursor-pointer">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+<div class="relative z-10">
+<div class="w-20 h-20 rounded-full border-4 border-primary/30 flex items-center justify-center mb-6 mx-auto">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="fluid_meditation">fluid</span>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-2">Deep Work Mode</h3>
+<p class="text-sm text-on-surface-variant mb-6 px-4 leading-relaxed">全ての通知を遮断し、集中を最大化します。</p>
+<button class="px-6 py-2 rounded-full border border-primary/40 text-primary text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all">
+                                Start Session
+                            </button>
+</div>
+</div>
+</div>
+<!-- Task Sections -->
+<div class="grid grid-cols-1 gap-12 max-w-5xl">
+<!-- Pending Tasks -->
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-on-surface flex items-center space-x-3">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span>進行中のタスク</span>
+</h3>
+<span class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">3 Tasks Pending</span>
+</div>
+<div class="space-y-3">
+<!-- Task Item 1 -->
+<div class="group flex items-center bg-surface-container-low hover:bg-surface-container rounded-xl p-5 transition-all cursor-pointer">
+<div class="mr-6">
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-transparent group-hover:text-primary/40 text-sm">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-on-surface font-bold text-md mb-1">Q3 収益レポートの構成案作成</h4>
+<div class="flex items-center space-x-4">
+<span class="text-xs text-on-surface-variant flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]">event</span>
+<span>今日 17:00</span>
+</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase tracking-wider">High Priority</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error">delete</span>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="group flex items-center bg-surface-container-low hover:bg-surface-container rounded-xl p-5 transition-all cursor-pointer">
+<div class="mr-6">
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-transparent group-hover:text-primary/40 text-sm">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-on-surface font-bold text-md mb-1">デザインシステムのトークン更新</h4>
+<div class="flex items-center space-x-4">
+<span class="text-xs text-on-surface-variant flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]">event</span>
+<span>明日 10:00</span>
+</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-surface-variant text-on-surface-variant uppercase tracking-wider">Project Nocturne</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error">delete</span>
+</div>
+</div>
+<!-- Task Item 3 -->
+<div class="group flex items-center bg-surface-container-low hover:bg-surface-container rounded-xl p-5 transition-all cursor-pointer border-l-4 border-tertiary">
+<div class="mr-6">
+<div class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-transparent group-hover:text-primary/40 text-sm">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-on-surface font-bold text-md mb-1">クライアントへのフィードバック送付</h4>
+<div class="flex items-center space-x-4">
+<span class="text-xs text-on-surface-variant flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]">event</span>
+<span>24 Oct</span>
+</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-tertiary-container text-on-tertiary-container uppercase tracking-wider">Urgent</span>
+</div>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error">delete</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Completed Tasks -->
+<div class="space-y-6 opacity-60">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-on-surface flex items-center space-x-3">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<span>完了済み</span>
+</h3>
+<button class="text-[10px] font-bold tracking-widest text-primary uppercase hover:underline">Clear History</button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center bg-surface-container-lowest/50 rounded-xl p-5 border border-outline-variant/10">
+<div class="mr-6">
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-sm font-bold">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-on-surface font-medium text-md line-through decoration-primary/40">週次ミーティング準備</h4>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Done at 09:12 AM</p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-lowest/50 rounded-xl p-5 border border-outline-variant/10">
+<div class="mr-6">
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-sm font-bold">check</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-on-surface font-medium text-md line-through decoration-primary/40">モバイルアプリのバグ修正 #104</h4>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Done Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Right Tool Panel (Asymmetric Design Element) -->
+<aside class="hidden xl:flex w-20 h-screen bg-surface-container-lowest flex-col items-center py-8 space-y-8 border-l border-outline-variant/10">
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-primary transition-all flex items-center justify-center text-on-surface-variant hover:text-on-primary">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-primary transition-all flex items-center justify-center text-on-surface-variant hover:text-on-primary">
+<span class="material-symbols-outlined" data-icon="music_note">music_note</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-primary transition-all flex items-center justify-center text-on-surface-variant hover:text-on-primary">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</button>
+<div class="flex-1 w-px bg-outline-variant/20"></div>
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-error transition-all flex items-center justify-center text-on-surface-variant hover:text-on-error">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+</button>
+</aside>
+</div>
+</body></html>

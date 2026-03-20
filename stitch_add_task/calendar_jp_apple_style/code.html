@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>カレンダー - The Mindful Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f9f9fb",
+              "on-primary-fixed": "#280056",
+              "secondary-fixed-dim": "#d5bbff",
+              "inverse-primary": "#d7baff",
+              "surface-container-low": "#f3f3f5",
+              "on-secondary-fixed": "#270058",
+              "on-secondary-container": "#533387",
+              "inverse-surface": "#2f3132",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-fixed": "#ecdcff",
+              "tertiary": "#391900",
+              "primary": "#310065",
+              "on-background": "#1a1c1d",
+              "surface-variant": "#e2e2e4",
+              "primary-container": "#4a148c",
+              "on-surface-variant": "#4a4452",
+              "secondary-container": "#c5a3ff",
+              "on-tertiary-fixed": "#301400",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#6c3a0d",
+              "surface-bright": "#f9f9fb",
+              "inverse-on-surface": "#f0f0f2",
+              "surface-container-lowest": "#ffffff",
+              "surface-tint": "#7345b6",
+              "error": "#ba1a1a",
+              "tertiary-container": "#592b00",
+              "surface-dim": "#d9dadc",
+              "error-container": "#ffdad6",
+              "on-primary-container": "#b889ff",
+              "on-primary": "#ffffff",
+              "surface": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#ffb782",
+              "surface-container": "#edeef0",
+              "primary-fixed": "#eddcff",
+              "outline": "#7c7483",
+              "on-surface": "#1a1c1d",
+              "primary-fixed-dim": "#d7baff",
+              "on-secondary-fixed-variant": "#543589",
+              "tertiary-fixed": "#ffdcc5",
+              "outline-variant": "#cdc3d4",
+              "surface-container-highest": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "secondary": "#6d4ea2",
+              "on-tertiary-container": "#d5915e",
+              "surface-container-high": "#e8e8ea"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "Noto Sans JP"],
+              "body": ["Inter", "Noto Sans JP"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white/70 backdrop-blur-xl no-border tonal-shift-surface-container-low">
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-purple-50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-purple-900" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline text-xl font-bold tracking-tight text-purple-900">タスク</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-purple-50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-purple-900" data-icon="search">search</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-32 px-6 max-w-2xl mx-auto space-y-10">
+<!-- Calendar Header Area -->
+<section class="flex justify-between items-end">
+<div>
+<p class="text-on-surface-variant font-label text-sm font-medium tracking-widest uppercase mb-1">2024年 5月</p>
+<h2 class="font-headline text-3xl font-extrabold text-primary tracking-tight">MAY</h2>
+</div>
+<div class="flex gap-1">
+<button class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Minimalist Month View -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm">
+<div class="grid grid-cols-7 gap-y-6 text-center">
+<!-- Day Labels -->
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">日</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">月</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">火</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">水</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">木</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">金</div>
+<div class="text-[10px] font-bold text-outline uppercase tracking-widest">土</div>
+<!-- Month Grid Placeholder -->
+<div class="py-2 text-outline-variant font-medium">28</div>
+<div class="py-2 text-outline-variant font-medium">29</div>
+<div class="py-2 text-outline-variant font-medium">30</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">1</span>
+<div class="w-1 h-1 rounded-full bg-secondary mt-1"></div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">2</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">3</span>
+<div class="w-1 h-1 rounded-full bg-secondary mt-1"></div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">4</span>
+</div>
+<!-- Row 2 -->
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">5</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">6</span>
+<div class="flex gap-0.5 mt-1">
+<div class="w-1 h-1 rounded-full bg-secondary"></div>
+<div class="w-1 h-1 rounded-full bg-secondary/50"></div>
+</div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">7</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">8</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">9</span>
+<div class="w-1 h-1 rounded-full bg-secondary mt-1"></div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">10</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">11</span>
+</div>
+<!-- Row 3 (Selected) -->
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">12</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">13</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<div class="absolute inset-0 mx-auto w-10 h-10 bg-primary-container rounded-xl -z-10 translate-y-1"></div>
+<span class="text-white font-bold">14</span>
+<div class="w-1 h-1 rounded-full bg-white mt-1"></div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">15</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">16</span>
+<div class="w-1 h-1 rounded-full bg-secondary mt-1"></div>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">17</span>
+</div>
+<div class="py-2 relative flex flex-col items-center justify-center">
+<span class="text-on-surface font-semibold">18</span>
+</div>
+<!-- Remaining Days Subtle -->
+<div class="py-2 text-on-surface font-medium opacity-30">19</div>
+<div class="py-2 text-on-surface font-medium opacity-30">20</div>
+<div class="py-2 text-on-surface font-medium opacity-30">21</div>
+<div class="py-2 text-on-surface font-medium opacity-30">22</div>
+<div class="py-2 text-on-surface font-medium opacity-30">23</div>
+<div class="py-2 text-on-surface font-medium opacity-30">24</div>
+<div class="py-2 text-on-surface font-medium opacity-30">25</div>
+</div>
+</section>
+<!-- Today's Agenda -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline text-lg font-bold text-on-surface">今日の予定</h3>
+<span class="text-xs font-bold text-outline tracking-wider">5月14日 (火)</span>
+</div>
+<div class="space-y-4">
+<!-- Agenda Card 1 -->
+<div class="group flex items-center p-5 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow border-l-4 border-primary-container">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="schedule">schedule</span>
+<span class="text-xs font-bold text-primary tracking-tight">09:00 — 10:30</span>
+</div>
+<h4 class="font-headline font-bold text-on-surface text-lg">プロジェクト・ミーティング</h4>
+<p class="text-sm text-on-surface-variant mt-1">新しいデザインシステムの最終確認</p>
+</div>
+<div class="p-2">
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<!-- Agenda Card 2 -->
+<div class="group flex items-center p-5 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow border-l-4 border-secondary">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="schedule">schedule</span>
+<span class="text-xs font-bold text-secondary tracking-tight">13:00 — 14:00</span>
+</div>
+<h4 class="font-headline font-bold text-on-surface text-lg">クライアント・ヒアリング</h4>
+<p class="text-sm text-on-surface-variant mt-1">要件定義のアップデート</p>
+</div>
+<div class="p-2">
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary transition-colors" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<!-- Agenda Card 3 (Task Style) -->
+<div class="group flex items-center p-5 bg-surface-container-lowest rounded-xl hover:shadow-md transition-shadow border-l-4 border-tertiary-container">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-tertiary-container" data-icon="check_circle">check_circle</span>
+<span class="text-xs font-bold text-tertiary-container tracking-tight">終日</span>
+</div>
+<h4 class="font-headline font-bold text-on-surface text-lg">レポートの提出</h4>
+</div>
+<div class="p-2">
+<span class="material-symbols-outlined text-outline-variant" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Action Floating Button -->
+<div class="fixed bottom-32 right-6">
+<button class="w-14 h-14 bg-primary text-white rounded-xl shadow-xl flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/75 backdrop-blur-2xl no-border tonal-transition shadow-[0_-4px_20px_rgba(0,0,0,0.04)] rounded-t-[2rem]">
+<!-- Task -->
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="check_circle">check_circle</span>
+<span class="font-label text-[10px] font-medium tracking-wide">タスク</span>
+</a>
+<!-- Calendar (Active) -->
+<a class="flex flex-col items-center justify-center bg-purple-100 text-purple-900 rounded-2xl px-5 py-1.5 active:scale-90 transition-transform duration-200 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="calendar_month" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-label text-[10px] font-medium tracking-wide">カレンダー</span>
+</a>
+<!-- Stats -->
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="bar_chart">bar_chart</span>
+<span class="font-label text-[10px] font-medium tracking-wide">統計</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="settings">settings</span>
+<span class="font-label text-[10px] font-medium tracking-wide">設定</span>
+</a>
+</nav>
+</body></html>

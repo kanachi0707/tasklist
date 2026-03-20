@@ -1,0 +1,1072 @@
+<!-- カレンダー (Calendar) JP -->
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&amp;family=Manrope:wght@800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#261d39",
+              "primary-fixed": "#eddcff",
+              "on-tertiary-container": "#a79bbe",
+              "secondary": "#6d4ea2",
+              "surface-bright": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "background": "#f9f9fb",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-container": "#c5a3ff",
+              "tertiary-fixed": "#eaddff",
+              "tertiary-fixed-dim": "#cdc1e5",
+              "on-background": "#1a1c1d",
+              "on-primary-container": "#b889ff",
+              "outline-variant": "#cdc3d4",
+              "inverse-primary": "#d7baff",
+              "secondary-fixed": "#ebdcff",
+              "on-primary-fixed": "#280056",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#3c3350",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-tint": "#7345b6",
+              "surface-container-highest": "#e2e2e4",
+              "surface-dim": "#d9dadc",
+              "primary": "#310065",
+              "on-tertiary-fixed": "#1f1732",
+              "outline": "#7c7483",
+              "surface-container-high": "#e8e8ea",
+              "surface": "#f9f9fb",
+              "on-secondary-container": "#533487",
+              "primary-container": "#4a148c",
+              "on-surface": "#1a1c1d",
+              "secondary-fixed-dim": "#d4bbff",
+              "inverse-on-surface": "#f0f0f2",
+              "on-secondary-fixed-variant": "#543589",
+              "inverse-surface": "#2f3132",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f3f5",
+              "on-surface-variant": "#4a4452",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#d7baff",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#270058",
+              "surface-container": "#eeeef0",
+              "on-tertiary-fixed-variant": "#4b4260"
+            },
+            fontFamily: {
+              "headline": ["Noto Sans JP", "Manrope"],
+              "body": ["Noto Sans JP", "Inter"],
+              "label": ["Noto Sans JP", "Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #f9f9fb;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background selection:bg-secondary-container">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-[#f9f9fb] dark:bg-slate-950 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#310065] dark:text-[#c5a3ff] active:opacity-80 transition-opacity p-2 rounded-lg hover:bg-[#f3f3f5] dark:hover:bg-slate-800">menu</button>
+<h1 class="font-['Noto_Sans_JP'] font-bold tracking-tight text-xl text-[#310065] dark:text-[#c5a3ff]">カレンダー</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Portrait of a Japanese professional woman profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSaGD5FCyrgLKvIFX9fEDKvKZxR4aNET-1zJcU2vQQihjrfUI_FzV4VaoZ-zMKH2W0K3gR6dNFMF5IYmfRojCLd8wlKnYc0rJDDzMbjoWbLZWwpwgYr4mSGO6n99Poy75nN2u4p_KPyRXked04PFTPWv3PT03ZBAiNZpDddj_ktc5oUiNnqKjjtqOzjouNK5HV_yGbod4feUh2AaPKMbYlgf8E01LkaXoseGF7rFdh5nhI54dpth5HNcPOH_YQQBVc-EjC5ROLNkw"/>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 pt-4 pb-32">
+<!-- Editorial Hero Section: Month Switcher -->
+<section class="mb-10 mt-4">
+<div class="flex items-end justify-between border-l-4 border-primary pl-6 py-2">
+<div>
+<span class="text-on-surface-variant font-medium tracking-widest text-sm uppercase block mb-1">2024 October</span>
+<h2 class="text-5xl font-black text-primary tracking-tighter">10月</h2>
+</div>
+<div class="flex gap-2 mb-1">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Bento Layout: Calendar & Agenda -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Calendar Card -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-xl p-8 shadow-[0_12px_32px_rgba(49,0,101,0.04)]">
+<div class="calendar-grid text-center mb-6">
+<div class="text-on-surface-variant text-xs font-bold py-2">月</div>
+<div class="text-on-surface-variant text-xs font-bold py-2">火</div>
+<div class="text-on-surface-variant text-xs font-bold py-2">水</div>
+<div class="text-on-surface-variant text-xs font-bold py-2">木</div>
+<div class="text-on-surface-variant text-xs font-bold py-2">金</div>
+<div class="text-secondary text-xs font-bold py-2">土</div>
+<div class="text-error text-xs font-bold py-2">日</div>
+</div>
+<div class="calendar-grid gap-y-4">
+<!-- Week 1 - Placeholder/Inactive -->
+<div class="text-outline-variant/40 py-4 text-lg">30</div>
+<!-- October Days -->
+<div class="py-4 text-lg font-medium text-on-surface">1</div>
+<div class="py-4 text-lg font-medium text-on-surface">2</div>
+<div class="py-4 text-lg font-medium text-on-surface">3</div>
+<div class="py-4 text-lg font-medium text-on-surface">4</div>
+<div class="py-4 text-lg font-medium text-secondary">5</div>
+<div class="py-4 text-lg font-medium text-error">6</div>
+<div class="py-4 text-lg font-medium text-on-surface">7</div>
+<div class="py-4 text-lg font-medium text-on-surface">8</div>
+<div class="py-4 text-lg font-medium text-on-surface">9</div>
+<div class="py-4 text-lg font-medium text-on-surface">10</div>
+<div class="py-4 text-lg font-medium text-on-surface relative">
+                        11
+                        <span class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+</div>
+<div class="py-4 text-lg font-medium text-secondary">12</div>
+<div class="py-4 text-lg font-medium text-error">13</div>
+<div class="py-4 text-lg font-medium text-on-surface">14</div>
+<div class="py-4 text-lg font-medium text-on-surface">15</div>
+<!-- Active Day -->
+<div class="py-4">
+<div class="w-12 h-12 flex items-center justify-center mx-auto bg-primary text-on-primary rounded-xl font-bold text-lg shadow-lg shadow-primary/20">
+                            16
+                        </div>
+</div>
+<div class="py-4 text-lg font-medium text-on-surface">17</div>
+<div class="py-4 text-lg font-medium text-on-surface relative">
+                        18
+                        <span class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+</div>
+<div class="py-4 text-lg font-medium text-secondary">19</div>
+<div class="py-4 text-lg font-medium text-error">20</div>
+<div class="py-4 text-lg font-medium text-on-surface">21</div>
+<div class="py-4 text-lg font-medium text-on-surface">22</div>
+<div class="py-4 text-lg font-medium text-on-surface">23</div>
+<div class="py-4 text-lg font-medium text-on-surface">24</div>
+<div class="py-4 text-lg font-medium text-on-surface">25</div>
+<div class="py-4 text-lg font-medium text-secondary">26</div>
+<div class="py-4 text-lg font-medium text-error">27</div>
+</div>
+</div>
+<!-- Agenda Sidebar -->
+<div class="lg:col-span-4 space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-xl font-bold text-primary">本日の予定</h3>
+<button class="text-primary font-bold text-sm hover:underline">10月16日</button>
+</div>
+<!-- Agenda Items -->
+<div class="space-y-4">
+<div class="group bg-surface-container-low p-5 rounded-xl transition-all hover:bg-surface-container-highest border-l-4 border-primary">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold uppercase tracking-widest text-on-tertiary-container">09:00 - 10:30</span>
+<span class="bg-secondary-fixed-dim px-2 py-0.5 rounded-full text-[10px] font-black">DESIGN</span>
+</div>
+<h4 class="text-lg font-bold text-on-surface mb-1">UIデザインレビュー</h4>
+<p class="text-sm text-on-surface-variant">新しいタスク管理画面の最終確認</p>
+</div>
+<div class="group bg-surface-container-low p-5 rounded-xl transition-all hover:bg-surface-container-highest border-l-4 border-outline-variant/30">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold uppercase tracking-widest text-on-tertiary-container">13:00 - 14:00</span>
+<span class="bg-tertiary-fixed-dim px-2 py-0.5 rounded-full text-[10px] font-black">TEAM</span>
+</div>
+<h4 class="text-lg font-bold text-on-surface mb-1">週次ミーティング</h4>
+<p class="text-sm text-on-surface-variant">進捗共有と翌週のプランニング</p>
+</div>
+<div class="group bg-surface-container-low p-5 rounded-xl transition-all hover:bg-surface-container-highest border-l-4 border-outline-variant/30">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold uppercase tracking-widest text-on-tertiary-container">16:30 - 17:30</span>
+<span class="bg-secondary-fixed-dim px-2 py-0.5 rounded-full text-[10px] font-black">FOCUS</span>
+</div>
+<h4 class="text-lg font-bold text-on-surface mb-1">ドキュメント作成</h4>
+<p class="text-sm text-on-surface-variant">ガイドラインのアップデート</p>
+</div>
+</div>
+<!-- Add Task Button -->
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+                    タスクを追加
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#ffffff]/85 dark:bg-slate-900/85 backdrop-blur-xl z-50 rounded-t-xl shadow-[0_-12px_32px_rgba(49,0,101,0.06)] border-t border-[#cdc3d4]/15">
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">checklist</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">タスク</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#c5a3ff] dark:bg-[#310065] text-[#533487] dark:text-[#f3f3f5] rounded-xl px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-bold uppercase tracking-widest">カレンダー</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">bar_chart</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">統計</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">設定</span>
+</a>
+</nav>
+</body></html>
+
+<!-- タスク追加 (Add Task) JP -->
+<!DOCTYPE html>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>新規タスク - The Editorial Task Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&amp;family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#261d39",
+              "primary-fixed": "#eddcff",
+              "on-tertiary-container": "#a79bbe",
+              "secondary": "#6d4ea2",
+              "surface-bright": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "background": "#f9f9fb",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-container": "#c5a3ff",
+              "tertiary-fixed": "#eaddff",
+              "tertiary-fixed-dim": "#cdc1e5",
+              "on-background": "#1a1c1d",
+              "on-primary-container": "#b889ff",
+              "outline-variant": "#cdc3d4",
+              "inverse-primary": "#d7baff",
+              "secondary-fixed": "#ebdcff",
+              "on-primary-fixed": "#280056",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#3c3350",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-tint": "#7345b6",
+              "surface-container-highest": "#e2e2e4",
+              "surface-dim": "#d9dadc",
+              "primary": "#310065",
+              "on-tertiary-fixed": "#1f1732",
+              "outline": "#7c7483",
+              "surface-container-high": "#e8e8ea",
+              "surface": "#f9f9fb",
+              "on-secondary-container": "#533487",
+              "primary-container": "#4a148c",
+              "on-surface": "#1a1c1d",
+              "secondary-fixed-dim": "#d4bbff",
+              "inverse-on-surface": "#f0f0f2",
+              "on-secondary-fixed-variant": "#543589",
+              "inverse-surface": "#2f3132",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f3f5",
+              "on-surface-variant": "#4a4452",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#d7baff",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#270058",
+              "surface-container": "#eeeef0",
+              "on-tertiary-fixed-variant": "#4b4260"
+            },
+            fontFamily: {
+              "headline": ["Noto Sans JP", "Manrope", "sans-serif"],
+              "body": ["Noto Sans JP", "Inter", "sans-serif"],
+              "label": ["Noto Sans JP", "Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #310065 0%, #4a148c 100%);
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-[#f3f3f5] dark:bg-slate-900 transition-colors">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="text-[#310065] dark:text-[#c5a3ff] active:opacity-80 transition-opacity p-2 hover:bg-[#f3f3f5] dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h1 class="font-['Noto_Sans_JP'] font-bold tracking-tight text-xl text-[#310065] dark:text-[#c5a3ff]">新規タスク</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container/20">
+<img alt="ユーザープロファイル" class="w-full h-full object-cover" data-alt="Professional user profile avatar headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA31si5bkwepgqAYen7Hoi3FIhytBnjU80Z3G15lR09cGbqeDJV0o8fErVtFAHALaDm3BgaH5KMbo5bbrFsWFSySq6s8XELyFx2Zmzj2IcPmcNGc8uJDSz0hTj4wvdf57WBTFYQB9uWrbMNzHtnQiJU5KPem9TtvfilTLom_ez3MRWqSOcaNbsRiST_Ne_xp3GzU4o8SuwcukFvdqqG6r70v76UNsPUEyzGJ5C39E319F6P9ah8i5W_ngHab7WdOgBp5hqwc6f25s"/>
+</div>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-6 pt-12">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<span class="text-on-tertiary-container font-medium tracking-[0.2em] uppercase text-xs mb-2 block">Create New</span>
+<h2 class="text-4xl font-black text-primary tracking-tighter leading-tight">
+                思考を整理し、<br/>
+                明日の準備を整える。
+            </h2>
+</section>
+<!-- Form Canvas -->
+<form class="space-y-10">
+<!-- Task Name -->
+<div class="group">
+<label class="block text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-3">タスク名</label>
+<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant/30 focus:border-primary focus:ring-0 text-2xl font-medium px-0 py-3 transition-colors placeholder:text-outline-variant" placeholder="例：プロジェクト企画書の作成" type="text"/>
+</div>
+<!-- Category Bento Selection -->
+<div>
+<label class="block text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-4">カテゴリー</label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-primary-fixed text-on-primary-fixed hover:bg-secondary-container transition-colors gap-2" type="button">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm font-medium">仕事</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors gap-2" type="button">
+<span class="material-symbols-outlined">home</span>
+<span class="text-sm font-medium">プライベート</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors gap-2" type="button">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-sm font-medium">健康</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors gap-2" type="button">
+<span class="material-symbols-outlined">more_horiz</span>
+<span class="text-sm font-medium">その他</span>
+</button>
+</div>
+</div>
+<!-- Date and Priority Flex Row -->
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex-1">
+<label class="block text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-3">期限</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-primary">calendar_today</span>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/30 focus:border-primary focus:ring-0 pl-8 py-3 text-base" type="date"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-3">優先度</label>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-full text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-outline-variant/20 transition-all" type="button">低</button>
+<button class="px-4 py-2 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container ring-2 ring-primary/10" type="button">中</button>
+<button class="px-4 py-2 rounded-full text-xs font-bold bg-surface-container-low text-on-surface-variant hover:bg-outline-variant/20 transition-all" type="button">高</button>
+</div>
+</div>
+</div>
+<!-- Details -->
+<div>
+<label class="block text-xs font-bold text-on-surface-variant tracking-widest uppercase mb-3">詳細</label>
+<div class="bg-surface-container-low rounded-xl p-4">
+<textarea class="w-full bg-transparent border-none focus:ring-0 p-0 text-on-surface-variant text-sm leading-relaxed resize-none" placeholder="具体的なステップやメモを入力..." rows="4"></textarea>
+</div>
+</div>
+<!-- Action Area -->
+<div class="pt-8 flex flex-col items-center">
+<button class="premium-gradient text-on-primary w-full md:w-auto md:min-w-[240px] py-4 px-10 rounded-full font-bold text-lg shadow-[0_12px_32px_rgba(49,0,101,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all" type="submit">
+                    タスクを保存
+                </button>
+<p class="mt-4 text-[10px] text-on-tertiary-container tracking-[0.1em] font-medium">PRESS ENTER TO QUICK SAVE</p>
+</div>
+</form>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#ffffff]/85 dark:bg-slate-900/85 backdrop-blur-xl z-50 rounded-t-xl shadow-[0_-12px_32px_rgba(49,0,101,0.06)] border-t border-[#cdc3d4]/15">
+<a class="flex flex-col items-center justify-center text-[#310065] dark:text-[#d4bbff] font-bold bg-[#c5a3ff] dark:bg-[#310065] rounded-xl px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">checklist</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">タスク</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">カレンダー</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">統計</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">設定</span>
+</a>
+</nav>
+<!-- Visual Decoration Elements -->
+<div class="fixed top-24 -right-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="fixed bottom-32 -left-12 w-48 h-48 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+</body></html>
+
+<!-- タスク一覧 (Tasks) JP -->
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>今日のタスク - Editorial Task Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#261d39",
+              "primary-fixed": "#eddcff",
+              "on-tertiary-container": "#a79bbe",
+              "secondary": "#6d4ea2",
+              "surface-bright": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "background": "#f9f9fb",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-container": "#c5a3ff",
+              "tertiary-fixed": "#eaddff",
+              "tertiary-fixed-dim": "#cdc1e5",
+              "on-background": "#1a1c1d",
+              "on-primary-container": "#b889ff",
+              "outline-variant": "#cdc3d4",
+              "inverse-primary": "#d7baff",
+              "secondary-fixed": "#ebdcff",
+              "on-primary-fixed": "#280056",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#3c3350",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-tint": "#7345b6",
+              "surface-container-highest": "#e2e2e4",
+              "surface-dim": "#d9dadc",
+              "primary": "#310065",
+              "on-tertiary-fixed": "#1f1732",
+              "outline": "#7c7483",
+              "surface-container-high": "#e8e8ea",
+              "surface": "#f9f9fb",
+              "on-secondary-container": "#533487",
+              "primary-container": "#4a148c",
+              "on-surface": "#1a1c1d",
+              "secondary-fixed-dim": "#d4bbff",
+              "inverse-on-surface": "#f0f0f2",
+              "on-secondary-fixed-variant": "#543589",
+              "inverse-surface": "#2f3132",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f3f5",
+              "on-surface-variant": "#4a4452",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#d7baff",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#270058",
+              "surface-container": "#eeeef0",
+              "on-tertiary-fixed-variant": "#4b4260"
+            },
+            fontFamily: {
+              "headline": ["Noto Sans JP", "sans-serif"],
+              "body": ["Noto Sans JP", "sans-serif"],
+              "label": ["Noto Sans JP", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #310065 0%, #4a148c 100%);
+        }
+        .frosted-nav {
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-[#f9f9fb] dark:bg-slate-950 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#310065] dark:text-[#c5a3ff] active:opacity-80 transition-opacity" data-icon="menu">menu</button>
+<h1 class="font-['Noto_Sans_JP'] font-bold tracking-tight text-xl text-[#310065] dark:text-[#c5a3ff]">今日 Task</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/15">
+<img alt="User Profile" data-alt="User profile avatar circle placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_EWyfax8G6f-Arp9IBes29c_33LJcQBcpszG7oZpdzfdSrFqd4cAH7GFUFfgjk6SC5YTsxKeX7kN5Vxua_CXXbk5TjlyDuurcSlpnX4dnWEYENqY4cUzh-bZSj7UDFM8Jrc0Xyu9kXxECYPX1zWGuve-mJj0490ZGTccZ_PM1AP8u5KbfDAFDQnavtDtczIR3eNrwok9i0uP6pfHVOE9ihjF7UbMZtnsyqI5G8VEfI_if5yH2OazrobIXzMBHRL4wpr5oVz_HaLk"/>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 pt-8">
+<!-- Hero Section: Zen Editorial -->
+<section class="mb-12">
+<span class="label-sm uppercase tracking-widest text-on-tertiary-container font-medium mb-2 block">2024年 5月 24日</span>
+<h2 class="text-5xl md:text-6xl font-black text-on-surface tracking-tighter leading-tight mb-4">
+                時間を意図的に<br/>デザインする
+            </h2>
+<p class="text-on-surface-variant text-lg max-w-md font-light leading-relaxed">
+                混沌とした日常に、静かな秩序を。今日の優先順位を整理しましょう。
+            </p>
+</section>
+<!-- Category Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between min-h-[160px] hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary" data-icon="work">work</span>
+<span class="text-xs font-bold bg-secondary-fixed-dim text-on-secondary-fixed-variant px-2 py-1 rounded-full uppercase">Work</span>
+</div>
+<div>
+<p class="text-3xl font-bold text-on-surface">12</p>
+<p class="text-sm font-medium text-on-surface-variant">カテゴリー: 仕事</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between min-h-[160px] hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+<span class="text-xs font-bold bg-secondary-fixed-dim text-on-secondary-fixed-variant px-2 py-1 rounded-full uppercase">Personal</span>
+</div>
+<div>
+<p class="text-3xl font-bold text-on-surface">5</p>
+<p class="text-sm font-medium text-on-surface-variant">カテゴリー: 個人</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between min-h-[160px] hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary" data-icon="favorite">favorite</span>
+<span class="text-xs font-bold bg-secondary-fixed-dim text-on-secondary-fixed-variant px-2 py-1 rounded-full uppercase">Health</span>
+</div>
+<div>
+<p class="text-3xl font-bold text-on-surface">3</p>
+<p class="text-sm font-medium text-on-surface-variant">カテゴリー: 健康</p>
+</div>
+</div>
+</section>
+<!-- Task List Area -->
+<section class="mb-12">
+<div class="flex items-baseline justify-between mb-8">
+<h3 class="text-2xl font-bold tracking-tight">未完了</h3>
+<span class="text-sm text-on-surface-variant font-medium">12件のタスク</span>
+</div>
+<!-- Task Items: Minimalist approach with whitespace as divider -->
+<div class="space-y-6">
+<!-- Task Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_32px_rgba(49,0,101,0.04)] flex items-center group active:scale-[0.98] transition-all">
+<div class="w-1 bg-primary h-12 mr-6 rounded-full"></div>
+<button class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
+</button>
+<div class="flex-grow">
+<h4 class="text-lg font-bold text-on-surface leading-snug">週報の作成と提出</h4>
+<p class="text-sm text-on-surface-variant">締め切り: 17:00</p>
+</div>
+<div class="flex gap-2">
+<span class="text-[10px] uppercase tracking-widest font-bold bg-tertiary-fixed-dim text-on-tertiary-fixed px-2 py-1 rounded-full">重要</span>
+</div>
+</div>
+<!-- Task Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_32px_rgba(49,0,101,0.04)] flex items-center group active:scale-[0.98] transition-all">
+<div class="w-1 bg-secondary-container h-12 mr-6 rounded-full"></div>
+<button class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
+</button>
+<div class="flex-grow">
+<h4 class="text-lg font-bold text-on-surface leading-snug">ヨガとマインドフルネス</h4>
+<p class="text-sm text-on-surface-variant">朝のルーティン</p>
+</div>
+<div class="flex gap-2">
+<span class="text-[10px] uppercase tracking-widest font-bold bg-surface-container-highest text-on-surface-variant px-2 py-1 rounded-full">健康</span>
+</div>
+</div>
+<!-- Task Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_32px_rgba(49,0,101,0.04)] flex items-center group active:scale-[0.98] transition-all">
+<div class="w-1 bg-primary-fixed-dim h-12 mr-6 rounded-full"></div>
+<button class="w-6 h-6 rounded-md border-2 border-outline-variant flex items-center justify-center mr-4 group-hover:border-primary transition-colors">
+</button>
+<div class="flex-grow">
+<h4 class="text-lg font-bold text-on-surface leading-snug">クライアントとのMTG用資料準備</h4>
+<p class="text-sm text-on-surface-variant">プロジェクトA</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Completed Tasks -->
+<section class="mb-12 opacity-60">
+<h3 class="text-xl font-bold tracking-tight mb-6">完了</h3>
+<div class="space-y-4">
+<div class="bg-surface p-4 flex items-center">
+<span class="material-symbols-outlined text-primary mr-4" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface line-through font-medium">メールの返信（5件）</span>
+</div>
+<div class="bg-surface p-4 flex items-center">
+<span class="material-symbols-outlined text-primary mr-4" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface line-through font-medium">コーヒー豆の購入</span>
+</div>
+</div>
+</section>
+<!-- Secondary Section: Upcoming -->
+<section class="mb-20">
+<h3 class="text-xl font-bold tracking-tight mb-6">今後の予定</h3>
+<div class="bg-surface-container-high p-8 rounded-2xl relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-sm font-bold text-primary mb-2">明日 5月 25日</p>
+<p class="text-2xl font-black text-on-surface mb-6">新製品のデザインレビュー会</p>
+<button class="editorial-gradient text-on-primary px-6 py-3 rounded-full font-bold text-sm tracking-wide shadow-lg active:scale-95 transition-all">
+                        詳細を確認する
+                    </button>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[160px]" data-icon="event">event</span>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB (Task Focused Screen: Add New Task) -->
+<button class="fixed right-6 bottom-28 w-14 h-14 editorial-gradient text-on-primary rounded-2xl shadow-[0_12px_32px_rgba(49,0,101,0.25)] flex items-center justify-center z-50 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#ffffff]/85 dark:bg-slate-900/85 backdrop-blur-xl z-50 rounded-t-xl shadow-[0_-12px_32px_rgba(49,0,101,0.06)] border-t border-[#cdc3d4]/15">
+<!-- Active Tab: タスク -->
+<a class="flex flex-col items-center justify-center bg-[#c5a3ff] dark:bg-[#310065] text-[#533487] dark:text-[#f3f3f5] rounded-xl px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="checklist">checklist</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">タスク</span>
+</a>
+<!-- Inactive Tab: カレンダー -->
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">カレンダー</span>
+</a>
+<!-- Inactive Tab: 統計 -->
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">統計</span>
+</a>
+<!-- Inactive Tab: 設定 -->
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest mt-1">設定</span>
+</a>
+</nav>
+</body></html>
+
+<!-- Design System -->
+Okay, I can definitely do that!
+
+Since you haven't provided the "context" yet, I'll set up a comprehensive **Project Brief / Mini-PRD Template** that I can then populate once you give me the details.
+
+This template covers the essential elements needed to kick off a project, align stakeholders, and define the initial scope.
+
+---
+
+### **Project Brief / Mini-PRD Template**
+
+---
+
+**1. Project Title:** [To be filled from your context]
+
+**2. Document Details:**
+    *   **Version:** 1.0
+    *   **Date:** [Current Date]
+    *   **Author(s):** [Your Name/Team]
+    *   **Status:** Draft / Proposed / Approved
+
+**3. Executive Summary:**
+    *   *A concise overview of the project, its purpose, and expected outcomes.*
+    *   [To be filled from your context]
+
+**4. Problem Statement / Opportunity:**
+    *   *What specific problem are we trying to solve? What unmet need exists? What new opportunity are we trying to seize? Clearly define the "why."*
+    *   [To be filled from your context]
+
+**5. Goals & Objectives (SMART):**
+    *   *What specific, measurable, achievable, relevant, and time-bound outcomes do we want to achieve with this project?*
+        *   **Goal 1:** [e.g., Increase user engagement by X% in Y months]
+        *   **Goal 2:** [e.g., Reduce customer support tickets related to Z by A% within B quarters]
+        *   **Goal 3:** [e.g., Launch new feature P to capture Q market share by R date]
+    *   [To be filled from your context]
+
+**6. Target Audience:**
+    *   *Who are the primary users or customers for this product/feature/project? What are their key characteristics, needs, and pain points relevant to this project?*
+    *   [To be filled from your context]
+
+**7. Key Features / High-Level Requirements:**
+    *   *What are the core functionalities or components that will be delivered as part of this project? (Keep this high-level initially).*
+        *   **Feature A:** [Brief description of what it does]
+        *   **Feature B:** [Brief description of what it does]
+        *   **Feature C:** [Brief description of what it does]
+    *   [To be filled from your context]
+
+**8. Out of Scope:**
+    *   *What will NOT be included in this project? Clearly defining this helps prevent scope creep and manages expectations.*
+        *   [e.g., Mobile app integration for V1]
+        *   [e.g., Support for X legacy system]
+        *   [e.g., Complex reporting features beyond basic analytics]
+    *   [To be filled from your context]
+
+**9. Success Metrics / KPIs:**
+    *   *How will we measure the success of this project against our goals? These should be quantifiable.*
+        *   **Metric 1:** [e.g., Conversion Rate from X to Y]
+        *   **Metric 2:** [e.g., Monthly Active Users (MAU)]
+        *   **Metric 3:** [e.g., Average Time Spent on Feature Z]
+        *   **Metric 4:** [e.g., Customer Satisfaction Score (CSAT)]
+    *   [To be filled from your context]
+
+**10. High-Level Timeline / Milestones:**
+    *   *A rough estimate of key phases or milestones. (More detailed planning will follow this brief).*
+        *   **Phase 1 (Discovery & Design):** [e.g., Q3 2024]
+        *   **Phase 2 (Development):** [e.g., Q4 2024 - Q1 2025]
+        *   **Phase 3 (Launch & Post-Launch Monitoring):** [e.g., Q2 2025]
+    *   [To be filled from your context]
+
+**11. Key Stakeholders:**
+    *   *Who needs to be involved, informed, or approve decisions for this project?*
+        *   **Product Owner/Manager:** [Your Name/Role]
+        *   **Engineering Lead:** [Name/Role]
+        *   **Design Lead:** [Name/Role]
+        *   **Marketing/Sales:** [Name/Role]
+        *   **Executive Sponsor:** [Name/Role]
+        *   **Other Teams:** [e.g., Customer Support, Legal, Operations]
+    *   [To be filled from your context]
+
+**12. Assumptions & Risks:**
+    *   *What are we assuming to be true for this project to succeed? What potential risks could impact the project, and how might we mitigate them?*
+        *   **Assumptions:** [e.g., Availability of key technical resources; sufficient budget allocation]
+        *   **Risks:** [e.g., Scope creep; technical complexities exceeding initial estimates; low user adoption]
+    *   [To be filled from your context]
+
+**13. Open Questions / Next Steps:**
+    *   *What still needs to be clarified or decided? What are the immediate actions following this brief?*
+        *   [e.g., Schedule deep-dive design session]
+        *   [e.g., Refine technical architecture proposal]
+        *   [e.g., Validate market demand with customer interviews]
+    *   [To be filled from your context]
+
+---
+
+**Please provide the context you have for your project!**
+
+To help me create the most effective PRD/brief, please include details on:
+
+*   **The core problem or opportunity** you're addressing.
+*   What you **envision the solution** to be (even at a high level).
+*   Who the **target users/customers** are.
+*   Any specific **goals or desired outcomes**.
+*   Any **known constraints, timelines, or technologies** you're considering.
+*   Who the **key stakeholders** might be.
+*   Any **existing solutions** you're trying to improve upon or replace.
+
+The more detail you provide, the better I can tailor this document!
+
+<!-- Product Requirements Document -->
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>統計 - The Editorial Task Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&amp;family=Manrope:wght@800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#261d39",
+              "primary-fixed": "#eddcff",
+              "on-tertiary-container": "#a79bbe",
+              "secondary": "#6d4ea2",
+              "surface-bright": "#f9f9fb",
+              "on-tertiary": "#ffffff",
+              "background": "#f9f9fb",
+              "on-primary-fixed-variant": "#5a2a9c",
+              "secondary-container": "#c5a3ff",
+              "tertiary-fixed": "#eaddff",
+              "tertiary-fixed-dim": "#cdc1e5",
+              "on-background": "#1a1c1d",
+              "on-primary-container": "#b889ff",
+              "outline-variant": "#cdc3d4",
+              "inverse-primary": "#d7baff",
+              "secondary-fixed": "#ebdcff",
+              "on-primary-fixed": "#280056",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#3c3350",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "surface-tint": "#7345b6",
+              "surface-container-highest": "#e2e2e4",
+              "surface-dim": "#d9dadc",
+              "primary": "#310065",
+              "on-tertiary-fixed": "#1f1732",
+              "outline": "#7c7483",
+              "surface-container-high": "#e8e8ea",
+              "surface": "#f9f9fb",
+              "on-secondary-container": "#533487",
+              "primary-container": "#4a148c",
+              "on-surface": "#1a1c1d",
+              "secondary-fixed-dim": "#d4bbff",
+              "inverse-on-surface": "#f0f0f2",
+              "on-secondary-fixed-variant": "#543589",
+              "inverse-surface": "#2f3132",
+              "on-primary": "#ffffff",
+              "surface-variant": "#e2e2e4",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f3f5",
+              "on-surface-variant": "#4a4452",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#d7baff",
+              "on-error": "#ffffff",
+              "on-secondary-fixed": "#270058",
+              "surface-container": "#eeeef0",
+              "on-tertiary-fixed-variant": "#4b4260"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "Noto Sans JP"],
+              "body": ["Inter", "Noto Sans JP"],
+              "label": ["Inter", "Noto Sans JP"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Noto Sans JP', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-[#f9f9fb] dark:bg-slate-950 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#310065] dark:text-[#c5a3ff] hover:bg-[#f3f3f5] p-2 rounded-full transition-colors active:opacity-80">menu</button>
+<h1 class="font-['Noto_Sans_JP'] font-bold tracking-tight text-xl text-[#310065] dark:text-[#c5a3ff]">統計</h1>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="User profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4TycwmQDMhd_Wvaho2WL--0M5I4XVkIoprXgP2g4xkgiUiyRhBo64WN5ZQVTz0Yf8TlLv4pEghc6725Yl3qEW-aFsSuOmYeHAbp5Q2c9TY1mUOlojQIzkiSh1FbVh0E73U6i7SyC6rhT4_YCYAeUxGyMgpSY2_EYokV30g2Krf3ZFsjLuYgmzCS8NeqTG9usU5S5_UkNwVfLNp5JZ-Mjd9AUQfWykBxev4OMeLxuWZBPDcxoVHGxYZuUUHGu8ud2xtjqcedFrmyU"/>
+</div>
+</header>
+<main class="max-w-5xl mx-auto px-6 mt-8">
+<!-- Hero Section / Productivity Score -->
+<section class="mb-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Productivity Score Bento Large -->
+<div class="md:col-span-2 bg-gradient-to-br from-primary to-primary-container rounded-xl p-8 text-on-primary shadow-[0_12_32px_rgba(49,0,101,0.06)] relative overflow-hidden">
+<div class="relative z-10">
+<span class="text-on-primary-container text-xs font-bold tracking-[0.2em] uppercase mb-2 block">生産性スコア</span>
+<div class="flex items-baseline gap-2">
+<h2 class="text-7xl font-black tracking-tighter">84</h2>
+<span class="text-xl font-medium opacity-70">/ 100</span>
+</div>
+<p class="mt-4 text-on-primary/80 max-w-xs text-sm leading-relaxed">
+                            先週と比較して 12% 向上しました。特に午前の集中力が高まっています。
+                        </p>
+</div>
+<!-- Abstract Background Pattern -->
+<div class="absolute right-[-10%] bottom-[-20%] w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>
+</div>
+<!-- Focus Time Metric -->
+<div class="bg-surface-container-low rounded-xl p-6 flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-4" style="font-variation-settings: 'FILL' 1;">timer</span>
+<span class="block text-on-surface-variant text-xs font-bold tracking-widest uppercase mb-1">集中時間</span>
+<h3 class="text-3xl font-bold text-on-surface tracking-tight">24h 45m</h3>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+2.4h 今週</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Metrics Grid -->
+<section class="mb-12">
+<h3 class="text-on-surface font-bold text-lg mb-6 ml-1">タスク完了率</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Daily Completion -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border-l-4 border-primary">
+<span class="text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block">DAILY</span>
+<h4 class="text-2xl font-bold text-on-surface">92%</h4>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full w-[92%]"></div>
+</div>
+</div>
+<!-- Weekly Completion -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border-l-4 border-secondary-container">
+<span class="text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block">WEEKLY</span>
+<h4 class="text-2xl font-bold text-on-surface">78%</h4>
+<div class="w-full bg-surface-variant h-1 rounded-full mt-3 overflow-hidden">
+<div class="bg-secondary-container h-full w-[78%]"></div>
+</div>
+</div>
+<!-- Total Completed Tasks -->
+<div class="bg-surface-container-lowest rounded-xl p-6">
+<span class="text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block">完了したタスク</span>
+<h4 class="text-2xl font-bold text-on-surface">142</h4>
+<p class="text-[10px] text-on-tertiary-container mt-2">目標まであと 8 タスク</p>
+</div>
+<!-- Category Split Indicator -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex items-center justify-between">
+<div>
+<span class="text-on-surface-variant text-[10px] font-bold tracking-[0.15em] uppercase mb-1 block">最重要カテゴリ</span>
+<h4 class="text-lg font-bold text-on-surface">開発</h4>
+</div>
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-primary scale-75">code</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Insights & Breakdown Section -->
+<section class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-20">
+<!-- Category Breakdown List -->
+<div class="lg:col-span-2">
+<h3 class="text-on-surface font-bold text-lg mb-6 ml-1">カテゴリー別内訳</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-primary rounded-full"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">仕事 / 開発</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">45% of total time</p>
+</div>
+</div>
+<span class="font-bold text-primary">11.2h</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-secondary rounded-full"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">ミーティング</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">22% of total time</p>
+</div>
+</div>
+<span class="font-bold text-secondary">5.4h</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-secondary-fixed-dim rounded-full"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">学習</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">18% of total time</p>
+</div>
+</div>
+<span class="font-bold text-on-secondary-fixed-variant">4.2h</span>
+</div>
+</div>
+</div>
+<!-- AI Insights Card -->
+<div class="lg:col-span-3 bg-surface-container-lowest rounded-xl p-8 flex flex-col justify-center border border-outline-variant/15">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="text-on-surface font-bold text-lg">インサイト</h3>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">wb_sunny</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+<strong class="text-on-surface">朝の黄金時間：</strong> あなたは午前 9:00 から 11:30 の間に最も多くのタスクを完了しています。この時間に最も重要なタスクをスケジュールすることをお勧めします。
+                        </p>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm">error_outline</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+<strong class="text-on-surface">改善の余地：</strong> 金曜日の午後は完了率が 30% 低下する傾向にあります。週の振り返りや軽めのタスクを配置すると効率的です。
+                        </p>
+</div>
+<button class="mt-4 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-xl font-bold text-sm self-start shadow-md hover:opacity-90 transition-opacity">
+                        詳細なレポートを表示
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#ffffff]/85 dark:bg-slate-900/85 backdrop-blur-xl z-50 rounded-t-xl shadow-[0_-12px_32px_rgba(49,0,101,0.06)] border-t border-[#cdc3d4]/15">
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">checklist</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">タスク</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">カレンダー</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#c5a3ff] dark:bg-[#310065] text-[#533487] dark:text-[#f3f3f5] rounded-xl px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">bar_chart</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-bold uppercase tracking-widest">統計</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4a4452] dark:text-slate-400 px-4 py-1 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="font-['Noto_Sans_JP'] text-[10px] font-medium uppercase tracking-widest">設定</span>
+</a>
+</nav>
+</body></html>

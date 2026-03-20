@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>タスク一覧 - The Mindful Architect</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "background": "#f9f9fb",
+                "on-primary-fixed": "#280056",
+                "secondary-fixed-dim": "#d5bbff",
+                "inverse-primary": "#d7baff",
+                "surface-container-low": "#f3f3f5",
+                "on-secondary-fixed": "#270058",
+                "on-secondary-container": "#533387",
+                "inverse-surface": "#2f3132",
+                "on-primary-fixed-variant": "#5a2a9c",
+                "secondary-fixed": "#ecdcff",
+                "tertiary": "#391900",
+                "primary": "#310065",
+                "on-background": "#1a1c1d",
+                "surface-variant": "#e2e2e4",
+                "primary-container": "#4a148c",
+                "on-surface-variant": "#4a4452",
+                "secondary-container": "#c5a3ff",
+                "on-tertiary-fixed": "#301400",
+                "on-error": "#ffffff",
+                "on-tertiary-fixed-variant": "#6c3a0d",
+                "surface-bright": "#f9f9fb",
+                "inverse-on-surface": "#f0f0f2",
+                "surface-container-lowest": "#ffffff",
+                "surface-tint": "#7345b6",
+                "error": "#ba1a1a",
+                "tertiary-container": "#592b00",
+                "surface-dim": "#d9dadc",
+                "error-container": "#ffdad6",
+                "on-primary-container": "#b889ff",
+                "on-primary": "#ffffff",
+                "surface": "#f9f9fb",
+                "on-tertiary": "#ffffff",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#ffb782",
+                "surface-container": "#edeef0",
+                "primary-fixed": "#eddcff",
+                "outline": "#7c7483",
+                "on-surface": "#1a1c1d",
+                "primary-fixed-dim": "#d7baff",
+                "on-secondary-fixed-variant": "#543589",
+                "tertiary-fixed": "#ffdcc5",
+                "outline-variant": "#cdc3d4",
+                "surface-container-highest": "#e2e2e4",
+                "on-secondary": "#ffffff",
+                "secondary": "#6d4ea2",
+                "on-tertiary-container": "#d5915e",
+                "surface-container-high": "#e8e8ea"
+              },
+              fontFamily: {
+                "headline": ["Manrope", "Noto Sans JP"],
+                "body": ["Inter", "Noto Sans JP"],
+                "label": ["Inter", "Noto Sans JP"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .glass-nav {
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface leading-[1.7]">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white/70 backdrop-blur-xl no-border tonal-shift-surface-container-low">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-purple-900 text-2xl hover:bg-purple-50 p-2 rounded-full transition-colors" data-icon="menu">menu</button>
+<span class="font-headline text-xl font-bold tracking-tight text-purple-900">タスク</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined text-purple-900 text-2xl hover:bg-purple-50 p-2 rounded-full transition-colors" data-icon="search">search</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-10">
+<h1 class="font-headline text-5xl font-extrabold tracking-tighter text-on-surface mb-2">今日 (Today)</h1>
+<p class="text-on-surface-variant font-medium">10月24日 木曜日 — 残り 4つのタスク</p>
+</section>
+<!-- Task List Content Area -->
+<div class="space-y-4">
+<!-- High Priority Task Card -->
+<div class="bg-surface-container-lowest p-5 rounded-xl flex items-start gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-outline-variant/10">
+<button class="mt-1 w-6 h-6 rounded-full border-2 border-primary-container flex items-center justify-center hover:bg-secondary-container/20 transition-all">
+<!-- Empty for unchecked state -->
+</button>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline text-lg font-bold text-on-surface leading-tight">デザインシステムの最終調整</h3>
+<span class="w-2 h-2 rounded-full bg-error" title="High Priority"></span>
+</div>
+<p class="text-sm text-on-surface-variant mt-1 mb-3">カラーパレットとタイポグラフィのトークンを確認する</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] font-bold tracking-widest text-primary-container bg-secondary-container/30 px-2 py-0.5 rounded-full">DESIGN</span>
+<span class="text-[10px] font-bold tracking-widest text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span> 14:00
+                        </span>
+</div>
+</div>
+</div>
+<!-- Normal Task Card -->
+<div class="bg-surface-container-lowest p-5 rounded-xl flex items-start gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-outline-variant/10">
+<button class="mt-1 w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center hover:bg-secondary-container/20 transition-all">
+</button>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline text-lg font-bold text-on-surface leading-tight">クライアントとのミーティング</h3>
+<span class="w-2 h-2 rounded-full bg-secondary-container" title="Medium Priority"></span>
+</div>
+<p class="text-sm text-on-surface-variant mt-1 mb-3">進捗状況の報告と次のフェーズの提案</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[10px] font-bold tracking-widest text-primary-container bg-secondary-container/30 px-2 py-0.5 rounded-full">WORK</span>
+<span class="text-[10px] font-bold tracking-widest text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span> Zoom
+                        </span>
+</div>
+</div>
+</div>
+<!-- Tonal Shift for Section Separation -->
+<div class="pt-6 pb-2">
+<h2 class="text-[12px] font-bold tracking-[0.2em] text-outline uppercase mb-4">完了済み</h2>
+</div>
+<!-- Completed Task Card -->
+<div class="bg-surface-container-low/50 p-5 rounded-xl flex items-start gap-4 border border-transparent">
+<div class="mt-1 w-6 h-6 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px]" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline text-lg font-bold text-on-surface-variant/50 line-through leading-tight">朝の瞑想 (15分)</h3>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="text-[10px] font-bold tracking-widest text-on-surface-variant/40 bg-surface-container-high/50 px-2 py-0.5 rounded-full">MINDFULNESS</span>
+</div>
+</div>
+</div>
+<!-- Decorative Bento Section -->
+<div class="grid grid-cols-2 gap-4 mt-8">
+<div class="bg-primary-container p-6 rounded-xl text-on-primary relative overflow-hidden h-40 flex flex-col justify-end">
+<span class="material-symbols-outlined absolute top-4 right-4 text-4xl opacity-20" data-icon="bolt">bolt</span>
+<p class="text-3xl font-extrabold font-headline">85%</p>
+<p class="text-xs font-medium tracking-wide opacity-80">今日の生産性スコア</p>
+</div>
+<div class="bg-secondary-container p-6 rounded-xl text-on-secondary-container relative overflow-hidden h-40 flex flex-col justify-end">
+<span class="material-symbols-outlined absolute top-4 right-4 text-4xl opacity-20" data-icon="bedtime">bedtime</span>
+<p class="text-xl font-bold font-headline leading-tight">深呼吸の時間です</p>
+<p class="text-[10px] font-medium tracking-wide mt-1">次のタスクの前にリラックス</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed right-6 bottom-28 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-container text-white shadow-xl shadow-primary/20 flex items-center justify-center active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/75 backdrop-blur-2xl no-border rounded-t-[2rem] shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<!-- Active Item: タスク -->
+<a class="flex flex-col items-center justify-center bg-purple-100 text-purple-900 rounded-2xl px-5 py-1.5 transition-transform duration-200 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">タスク</span>
+</a>
+<!-- Inactive Items -->
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-transform duration-200 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">カレンダー</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-transform duration-200 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">統計</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 px-5 py-1.5 hover:text-purple-600 transition-transform duration-200 ease-out active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Inter','Noto_Sans_JP'] text-[10px] font-medium tracking-wide mt-1">設定</span>
+</a>
+</nav>
+</body></html>

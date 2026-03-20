@@ -1,0 +1,33 @@
+Options -Indexes
+DirectoryIndex index.php
+
+ErrorDocument 404 error.php
+ErrorDocument 500 error.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^calendar/?$ calendar.php [L,QSA]
+RewriteRule ^stats/?$ stats.php [L,QSA]
+RewriteRule ^settings/?$ settings.php [L,QSA]
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^task/new/?$ task-form.php [L,QSA]
+RewriteRule ^task/edit/?$ task-form.php [L,QSA]
+
+RewriteRule ^api/auth/request-magic-link/?$ api/auth/request-magic-link.php [L,QSA]
+RewriteRule ^api/auth/verify-magic-link/?$ api/auth/verify-magic-link.php [L,QSA]
+RewriteRule ^api/auth/logout/?$ api/auth/logout.php [L,QSA]
+RewriteRule ^api/auth/me/?$ api/auth/me.php [L,QSA]
+
+RewriteRule ^api/categories/?$ api/categories/index.php [L,QSA]
+RewriteRule ^api/todos/?$ api/todos/index.php [L,QSA]
+RewriteRule ^api/todos/([0-9]+)/toggle/?$ api/todos/toggle.php?id=$1 [L,QSA]
+RewriteRule ^api/todos/([0-9]+)/?$ api/todos/item.php?id=$1 [L,QSA]
+RewriteRule ^api/stats/summary/?$ api/stats/summary.php [L,QSA]
+RewriteRule ^api/stats/daily-completion/?$ api/stats/daily-completion.php [L,QSA]
+RewriteRule ^api/stats/category-breakdown/?$ api/stats/category-breakdown.php [L,QSA]
+</IfModule>
