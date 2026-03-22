@@ -22,11 +22,10 @@ render_page_start('タスク', 'home', [
     <div class="mindful-hero-copy">
         <p class="eyebrow"><?= h($homeYearLabel) ?></p>
         <h2><?= h($homeDateLabel) ?>(<?= h($homeWeekdayLabel) ?>)</h2>
-        <p id="homeSummaryLine"><?= h(current_date_label()) ?>・残り 0 件のタスク</p>
     </div>
     <div class="mindful-hero-background" aria-hidden="true">
-        <img class="hero-logo hero-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_p.png')) ?>" alt="">
-        <img class="hero-logo hero-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo.png')) ?>" alt="">
+        <img class="hero-logo hero-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_pp.png')) ?>" alt="">
+        <img class="hero-logo hero-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo_wp.png')) ?>" alt="">
     </div>
 </section>
 

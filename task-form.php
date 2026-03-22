@@ -29,6 +29,10 @@ render_page_start($pageTitle, 'task-form', [
             <span class="material-symbols-outlined">bar_chart</span>
             <span>統計</span>
         </a>
+        <a class="topbar-dropdown-link" href="<?= h(page_url('feed.php')) ?>">
+            <span class="material-symbols-outlined">rss_feed</span>
+            <span>FEED</span>
+        </a>
         <a class="topbar-dropdown-link" href="<?= h(page_url('settings.php')) ?>">
             <span class="material-symbols-outlined">settings</span>
             <span>設定</span>
@@ -37,12 +41,22 @@ render_page_start($pageTitle, 'task-form', [
 </div>
 
 <section class="task-editor-shell">
+    <div class="inline-actions hero-actions">
+        <a class="button button-secondary" href="<?= h(page_url('task.php')) ?>">戻る</a>
+    </div>
     <form id="taskForm" class="task-editor-form">
         <input type="hidden" id="taskId" value="<?= (int) $taskId ?>">
 
         <label class="task-editor-field">
             <span class="task-editor-label">タスク名</span>
-            <input id="taskTitle" name="title" type="text" maxlength="120" placeholder="やることを入力してください" required>
+            <input
+                id="taskTitle"
+                name="title"
+                type="text"
+                maxlength="120"
+                placeholder="やることを入力してください"
+                required
+            >
         </label>
 
         <div class="task-editor-group">
@@ -79,7 +93,13 @@ render_page_start($pageTitle, 'task-form', [
 
         <label class="task-editor-field">
             <span class="task-editor-label">詳細メモ</span>
-            <textarea id="taskDescription" name="description" rows="3" maxlength="2000" placeholder="補足があれば入力してください"></textarea>
+            <textarea
+                id="taskDescription"
+                name="description"
+                rows="3"
+                maxlength="2000"
+                placeholder="補足があれば入力してください"
+            ></textarea>
         </label>
 
         <div class="task-editor-actions">

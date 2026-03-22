@@ -6,12 +6,8 @@ render_page_start('フィード', 'feed');
 ?>
 <section class="hero-card feed-hero-card">
     <div class="hero-copy">
-        <p class="eyebrow">Quiet Feed</p>
-        <h2>今日の積み重ねを、静かに共有する</h2>
-        <p class="lead">大きな声ではなく、小さな前進が見える場所です。みんなの24時間と、自分の積み重ねを振り返れます。</p>
-    </div>
-    <div class="hero-visual">
-        <img src="<?= h(asset_url('img/03_komitchie.png')) ?>" alt="フィードのイメージ">
+        <p class="eyebrow">FEED</p>
+        <p class="lead">みんなの直近24時間の頑張りが見える場所です。いいねボタンで応援し合いましょう。1日2回まで作業のきりの良い所で、あなたの頑張りを投稿してください。</p>
     </div>
 </section>
 
@@ -24,10 +20,10 @@ render_page_start('フィード', 'feed');
     </div>
     <div id="feedComposeState" class="feed-compose-state"></div>
     <form id="feedComposeForm" class="feed-compose-form" hidden>
-        <div class="feed-summary-preview">
-            <span class="feed-summary-label">自動要約</span>
-            <p id="feedAutoSummary">今日は一歩だけ前に進めました</p>
-        </div>
+        <label class="feed-message-field" for="feedMessageSelect">
+            <span class="feed-summary-label">投稿メッセージ</span>
+            <select class="feed-message-select" id="feedMessageSelect" name="message_variant"></select>
+        </label>
 
         <div class="feed-icon-picker">
             <span class="feed-summary-label">投稿アイコン</span>
@@ -35,29 +31,30 @@ render_page_start('フィード', 'feed');
         </div>
 
         <div class="feed-template-picker">
-            <span class="feed-summary-label">定型文を選ぶ（最大3つ）</span>
+            <span class="feed-summary-label">定型文を選ぶ・最大3つ</span>
             <div class="feed-template-grid" id="feedTemplateGrid"></div>
+            <details class="feed-template-more" id="feedTemplateMore">
+                <summary>これ以外のメッセージ</summary>
+                <div class="feed-template-grid feed-template-grid-extra" id="feedTemplateExtra"></div>
+            </details>
         </div>
 
-        <button class="button button-primary feed-share-button" type="submit">共有する</button>
+        <div class="feed-compose-confirm" id="feedComposeConfirm"></div>
+        <div class="feed-compose-actions">
+            <button class="button button-primary feed-share-button" type="submit">共有する</button>
+        </div>
     </form>
 </section>
 
-<section class="panel-card feed-tabs-card">
-    <div class="chip-row feed-mode-tabs" id="feedModeTabs">
-        <button class="chip-button is-active" type="button" data-feed-tab="public">みんな</button>
-        <button class="chip-button" type="button" data-feed-tab="history">履歴</button>
-    </div>
-</section>
-
-<section class="feed-grid">
-    <section class="panel-card feed-stream-panel" data-feed-panel="public">
-        <div class="section-heading">
-            <div>
-                <p class="eyebrow">Everyone</p>
-                <h3>直近24時間の進捗</h3>
-            </div>
+<section class="panel-card feed-shell-card">
+    <div class="feed-shell-head">
+        <div class="chip-row feed-mode-tabs" id="feedModeTabs">
+            <button class="chip-button is-active" type="button" data-feed-tab="public">みんな</button>
+            <button class="chip-button" type="button" data-feed-tab="history">履歴</button>
         </div>
+    </div>
+
+    <section class="feed-panel" data-feed-panel="public">
         <div class="feed-stream" id="feedPublicList"></div>
         <div class="empty-state soft-empty" id="feedPublicEmpty" hidden>
             <img src="<?= h(asset_url('img/icon_play.png')) ?>" alt="公開フィードの空状態">
@@ -68,13 +65,7 @@ render_page_start('フィード', 'feed');
         </div>
     </section>
 
-    <section class="panel-card feed-history-panel" data-feed-panel="history" hidden>
-        <div class="section-heading">
-            <div>
-                <p class="eyebrow">My History</p>
-                <h3>自分の積み重ね</h3>
-            </div>
-        </div>
+    <section class="feed-panel" data-feed-panel="history" hidden>
         <div class="feed-history-summary" id="feedHistorySummary"></div>
         <div class="feed-stream" id="feedHistoryList"></div>
         <div class="empty-state soft-empty" id="feedHistoryEmpty" hidden>

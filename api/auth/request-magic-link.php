@@ -59,5 +59,4 @@ if (!$mailSent && !is_debug()) {
 json_success([
     'message' => 'ログイン用リンクを送信しました。',
     'expires_at' => $expiresAt->format(DateTimeInterface::ATOM),
-    'debug_link' => is_debug() ? $link : null,
 ]);

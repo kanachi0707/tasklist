@@ -2,12 +2,15 @@
 
 return [
     'app' => [
-        'name' => 'Mitchie Todo',
+        'name' => 'Mitchie ToDo!',
         'base_url' => '',
         'env' => 'production',
         'debug' => false,
         'timezone' => 'Asia/Tokyo',
         'force_https' => true,
+    ],
+    'analytics' => [
+        'ga_measurement_id' => 'G-KGF5ZV4CQF',
     ],
     'security' => [
         'app_key' => 'PLEASE_CHANGE_THIS_TO_A_LONG_RANDOM_STRING',
@@ -38,12 +41,12 @@ return [
         'encryption' => 'tls',
         'username' => 'smtp-user@example.com',
         'password' => 'CHANGE_ME',
-        'from_email' => 'no-reply@example.com',
+        'from_email' => 'noreply@todo.kanachi.art',
         'from_name' => 'Mitchie Todo',
         'timeout' => 15,
     ],
     'contact' => [
-        'operator_name' => 'TODO: 運営者名を設定',
-        'support_email' => 'TODO: support@example.com を設定',
+        'operator_name' => 'kanachi',
+        'support_email' => 'support@todo.kanachi.art',
     ],
 ];

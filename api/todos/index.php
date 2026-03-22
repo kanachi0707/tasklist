@@ -63,13 +63,18 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     csrf_validate_request();
 
+    $actor = current_actor();
+
     try {
         $payload = validate_todo_payload(request_data());
+        $payload['category_id'] = resolve_accessible_category_id(
+            $payload['category_id'],
+            $actor['type'] === 'user' ? (int) $actor['user_id'] : null
+        );
     } catch (InvalidArgumentException $exception) {
         json_error($exception->getMessage(), 422);
     }
 
-    $actor = current_actor();
     $sortOrder = next_todo_sort_order_for_current_actor(false);
     db()->prepare(
         'INSERT INTO todos (

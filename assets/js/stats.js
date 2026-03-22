@@ -67,7 +67,6 @@
         document.getElementById("statsCompletionRate").textContent = Math.round(rate);
         document.getElementById("statsDoneCount").textContent = summary.done_count;
         document.getElementById("statsOpenCount").textContent = summary.open_count;
-        document.getElementById("statsTotalCount").textContent = summary.total_count;
         document.getElementById("statsRingLabel").textContent = Math.round(rate) + "%";
         document.getElementById("statsBestDay").textContent = bestPoint ? bestPoint.label : "-";
 

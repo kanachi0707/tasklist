@@ -280,6 +280,15 @@ function render_page_start(string $title, string $pageKey, array $payload = []):
     $headerBackUrl = (string) ($payload['header_back_url'] ?? page_url('task.php'));
     $headerTrailingIcon = (string) ($payload['header_trailing_icon'] ?? 'more_horiz');
     $showSplash = (bool) ($payload['show_splash'] ?? false);
+    $siteName = (string) config('app.name', 'Todo App');
+    $siteDescription = 'みっちーToDo! ｜ シンプルなタスク管理と皆の応援ツール';
+    $gaMeasurementId = (string) config('analytics.ga_measurement_id', '');
+    $siteDescription = 'みっちーToDo! ｜ シンプルなタスク管理と皆の応援ツール';
+    $siteDescription = 'みっちーToDo! ｜ シンプルなタスク管理と皆の応援ツール';
+    $pageTitle = $title . ' | ' . $siteName;
+    $currentPage = basename((string) ($_SERVER['SCRIPT_NAME'] ?? 'task.php'));
+    $pageUrl = absolute_build_url($currentPage);
+    $ogImageUrl = absolute_build_url('image/icon/OGP.png');
     $appPayload = array_merge([
         'page' => $pageKey,
         'today' => now()->format('Y-m-d'),
@@ -302,6 +311,7 @@ function render_page_start(string $title, string $pageKey, array $payload = []):
             'feedList' => api_url('feed/index.php'),
             'feedStatus' => api_url('feed/my-status.php'),
             'feedItem' => api_url('feed/item.php'),
+            'feedLike' => api_url('feed/like.php'),
             'historyList' => api_url('history/me.php'),
             'historySummary' => api_url('history/me-summary.php'),
         ],
@@ -314,6 +324,9 @@ function render_page_start(string $title, string $pageKey, array $payload = []):
             'taskForm' => page_url('task-form.php'),
             'privacy' => page_url('privacy.php'),
         ],
+        'assets' => [
+            'mitchie01' => asset_url('img/01_mitchie.png'),
+        ],
         'themeCookieName' => (string) config('security.theme_cookie_name', 'todo_theme'),
         'cookieSecure' => cookie_secure(),
         'showSplash' => $showSplash,
@@ -324,14 +337,38 @@ function render_page_start(string $title, string $pageKey, array $payload = []):
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title><?= h($title) ?> | <?= h(config('app.name', 'Todo App')) ?></title>
+    <title><?= h($pageTitle) ?></title>
+    <meta name="description" content="<?= h($siteDescription) ?>">
+    <meta property="og:title" content="<?= h($pageTitle) ?>">
+    <meta property="og:description" content="<?= h($siteDescription) ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?= h($pageUrl) ?>">
+    <meta property="og:image" content="<?= h($ogImageUrl) ?>">
+    <meta property="og:site_name" content="<?= h($siteName) ?>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= h($pageTitle) ?>">
+    <meta name="twitter:description" content="<?= h($siteDescription) ?>">
+    <meta name="twitter:image" content="<?= h($ogImageUrl) ?>">
     <meta name="theme-color" content="#efe8fb">
+    <meta name="apple-mobile-web-app-title" content="<?= h($siteName) ?>">
     <meta name="csrf-token" content="<?= h(csrf_token()) ?>">
+    <link rel="icon" href="<?= h(build_url('image/icon/fabicon.jpg')) ?>" type="image/jpeg">
+    <link rel="apple-touch-icon" href="<?= h(build_url('image/icon/icon_180.png')) ?>">
+    <link rel="manifest" href="<?= h(build_url('manifest.webmanifest')) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= h(asset_url('css/style.css')) ?>">
+    <?php if ($gaMeasurementId !== ''): ?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= h($gaMeasurementId) ?>"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', <?= json_encode($gaMeasurementId, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>);
+    </script>
+    <?php endif; ?>
     <script>
         (function () {
             try {
@@ -355,8 +392,8 @@ function render_page_start(string $title, string $pageKey, array $payload = []):
 <body class="page-<?= h($pageKey) ?>">
 <div class="app-splash" id="appSplash" aria-hidden="true">
     <div class="app-splash-logo-wrap">
-        <img class="app-splash-logo app-splash-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_p.png')) ?>" alt="">
-        <img class="app-splash-logo app-splash-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo.png')) ?>" alt="">
+        <img class="app-splash-logo app-splash-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_pp.png')) ?>" alt="">
+        <img class="app-splash-logo app-splash-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo_wp.png')) ?>" alt="">
     </div>
 </div>
 <div class="site-shell">
@@ -408,8 +445,8 @@ function render_page_end(string $activePage, array $scripts = [], bool $showNav 
     <?php if ($showNav): ?>
     <nav class="bottom-nav" aria-label="メインナビゲーション">
         <a class="desktop-nav-brand" href="<?= h(page_url('index.php')) ?>" aria-label="トップへ">
-            <img class="desktop-nav-brand-logo desktop-nav-brand-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_p.png')) ?>" alt="">
-            <img class="desktop-nav-brand-logo desktop-nav-brand-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo.png')) ?>" alt="">
+            <img class="desktop-nav-brand-logo desktop-nav-brand-logo-light" src="<?= h(asset_url('img/MitchieTodo_logo_pp.png')) ?>" alt="">
+            <img class="desktop-nav-brand-logo desktop-nav-brand-logo-dark" src="<?= h(asset_url('img/MitchieTodo_logo_wp.png')) ?>" alt="">
         </a>
         <?php foreach ($navItems as $item): ?>
             <a href="<?= h($item['href']) ?>" class="bottom-nav-link<?= $activePage === $item['key'] ? ' is-active' : '' ?>">

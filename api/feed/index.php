@@ -28,9 +28,9 @@ if ($method === 'POST') {
         json_error('投稿するには先にユーザー名を設定してください。', 422);
     }
 
-    $existing = todays_feed_post((int) $user['id']);
-    if ($existing) {
-        json_error('今日はすでに投稿済みです。', 409);
+    $todayPostsCount = todays_feed_posts_count((int) $user['id']);
+    if ($todayPostsCount >= max_daily_feed_posts()) {
+        json_error('今日は2回まで投稿できます。今日はすでに投稿済みです。', 409);
     }
 
     $activity = todays_completed_activity((int) $user['id']);
@@ -39,24 +39,27 @@ if ($method === 'POST') {
         $payload = request_data();
         $templateLines = validate_feed_template_lines((array) ($payload['template_lines'] ?? []));
         $iconKey = validate_feed_icon_key((string) ($payload['icon_key'] ?? ''));
-        $autoSummary = build_auto_summary($activity);
+        $messageVariant = validate_feed_message_variant((string) ($payload['message_variant'] ?? ''), $activity);
+        $autoSummary = build_auto_summary($activity, $messageVariant);
     } catch (InvalidArgumentException $exception) {
         json_error($exception->getMessage(), 422);
     }
 
     $createdAt = now();
     $publicUntil = $createdAt->modify('+24 hours');
+    $postSequence = next_feed_post_sequence((int) $user['id'], $activity['date']);
 
     try {
         db()->prepare(
             'INSERT INTO feed_posts (
-                user_id, post_date, completed_count, category_summary, auto_summary, template_lines_json, icon_key, created_at, public_until, deleted_at
+                user_id, post_date, post_sequence, completed_count, category_summary, auto_summary, template_lines_json, icon_key, created_at, public_until, deleted_at
              ) VALUES (
-                :user_id, :post_date, :completed_count, :category_summary, :auto_summary, :template_lines_json, :icon_key, :created_at, :public_until, NULL
+                :user_id, :post_date, :post_sequence, :completed_count, :category_summary, :auto_summary, :template_lines_json, :icon_key, :created_at, :public_until, NULL
              )'
         )->execute([
             'user_id' => $user['id'],
             'post_date' => $activity['date'],
+            'post_sequence' => $postSequence,
             'completed_count' => $activity['completed_count'],
             'category_summary' => $activity['category_summary'],
             'auto_summary' => $autoSummary,
@@ -67,7 +70,7 @@ if ($method === 'POST') {
         ]);
     } catch (PDOException $exception) {
         if ((int) $exception->getCode() === 23000) {
-            json_error('今日はすでに投稿済みです。', 409);
+            json_error('今日は2回まで投稿できます。今日はすでに投稿済みです。', 409);
         }
         throw $exception;
     }

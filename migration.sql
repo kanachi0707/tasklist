@@ -50,12 +50,17 @@ CREATE TABLE IF NOT EXISTS user_sessions (
 
 CREATE TABLE IF NOT EXISTS categories (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id BIGINT UNSIGNED NULL DEFAULT NULL,
     slug VARCHAR(50) NOT NULL,
     name VARCHAR(100) NOT NULL,
     color VARCHAR(20) NOT NULL,
     sort_order INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_categories_slug (slug)
+    UNIQUE KEY uq_categories_slug (slug),
+    KEY idx_categories_user_id (user_id),
+    CONSTRAINT fk_categories_user
+        FOREIGN KEY (user_id) REFERENCES users (id)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS todos (
@@ -98,6 +103,7 @@ CREATE TABLE IF NOT EXISTS feed_posts (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id BIGINT UNSIGNED NOT NULL,
     post_date DATE NOT NULL,
+    post_sequence TINYINT UNSIGNED NOT NULL DEFAULT 1,
     completed_count INT NOT NULL,
     category_summary VARCHAR(255) NULL DEFAULT NULL,
     auto_summary VARCHAR(255) NOT NULL,
@@ -107,7 +113,8 @@ CREATE TABLE IF NOT EXISTS feed_posts (
     public_until DATETIME NOT NULL,
     deleted_at DATETIME NULL DEFAULT NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_feed_posts_user_date (user_id, post_date),
+    UNIQUE KEY uq_feed_posts_user_date_sequence (user_id, post_date, post_sequence),
+    KEY idx_feed_posts_user_date (user_id, post_date),
     KEY idx_feed_posts_public_until (public_until),
     KEY idx_feed_posts_created_at (created_at),
     KEY idx_feed_posts_deleted_at (deleted_at),
@@ -116,12 +123,32 @@ CREATE TABLE IF NOT EXISTS feed_posts (
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO categories (slug, name, color, sort_order) VALUES
-    ('work', '仕事', '#6f4abf', 10),
-    ('personal', 'プライベート', '#b66ad8', 20),
-    ('health', '健康', '#6f93d6', 30),
-    ('other', 'その他', '#9e9aa8', 40)
+CREATE TABLE IF NOT EXISTS feed_post_likes (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    feed_post_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_feed_post_likes_post_user (feed_post_id, user_id),
+    KEY idx_feed_post_likes_user_id (user_id),
+    CONSTRAINT fk_feed_post_likes_post
+        FOREIGN KEY (feed_post_id) REFERENCES feed_posts (id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_feed_post_likes_user
+        FOREIGN KEY (user_id) REFERENCES users (id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO categories (user_id, slug, name, color, sort_order) VALUES
+    (NULL, 'work', '仕事', '#6f4abf', 10),
+    (NULL, 'personal', 'プライベート', '#b66ad8', 20),
+    (NULL, 'health', '健康', '#6f93d6', 30),
+    (NULL, 'learning', '学び', '#6da88f', 40),
+    (NULL, 'housework', '家事', '#d69a6f', 50),
+    (NULL, 'money', 'お金', '#c28a5b', 60),
+    (NULL, 'other', 'その他', '#9e9aa8', 70)
 ON DUPLICATE KEY UPDATE
+    user_id = VALUES(user_id),
     name = VALUES(name),
     color = VALUES(color),
     sort_order = VALUES(sort_order);

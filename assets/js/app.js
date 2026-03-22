@@ -56,17 +56,26 @@
             .replace(/'/g, "&#39;");
     }
 
-    function showToast(message) {
+    function showToast(message, options) {
         var toast = document.getElementById("toast");
         if (!toast) {
             return;
         }
 
-        toast.textContent = message;
+        var config = options || {};
+        toast.classList.toggle("has-icon", Boolean(config.icon));
+
+        if (config.icon) {
+            toast.innerHTML = '<img class="toast-icon" src="' + escapeHtml(config.icon) + '" alt=""><span class="toast-label">' + escapeHtml(message) + "</span>";
+        } else {
+            toast.textContent = message;
+        }
+
         toast.hidden = false;
         clearTimeout(showToast.timer);
         showToast.timer = setTimeout(function () {
             toast.hidden = true;
+            toast.classList.remove("has-icon");
         }, 2800);
     }
 
@@ -196,6 +205,160 @@
         window.setTimeout(finishSplash, duration);
     }
 
+    function initTopbarMenu() {
+        var passiveButton = document.querySelector(".topbar-default .topbar-left .topbar-icon-button.is-passive");
+        if (!passiveButton || !APP.pages) {
+            return;
+        }
+
+        var wrapper = document.createElement("div");
+        wrapper.className = "topbar-menu";
+
+        var toggle = passiveButton.cloneNode(true);
+        toggle.classList.remove("is-passive");
+        toggle.setAttribute("aria-label", "メニュー");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.removeAttribute("disabled");
+        toggle.style.pointerEvents = "";
+
+        var menu = document.createElement("div");
+        menu.className = "topbar-dropdown";
+        menu.hidden = true;
+
+        [
+            { href: APP.pages.home, icon: "checklist", label: "タスク" },
+            { href: APP.pages.calendar, icon: "calendar_month", label: "カレンダー" },
+            { href: APP.pages.stats, icon: "bar_chart", label: "統計" },
+            { href: APP.pages.feed, icon: "rss_feed", label: "FEED" },
+            { href: APP.pages.settings, icon: "settings", label: "設定" }
+        ].forEach(function (item) {
+            if (!item.href) {
+                return;
+            }
+
+            var link = document.createElement("a");
+            link.className = "topbar-dropdown-link";
+            link.href = item.href;
+            link.innerHTML = '<span class="material-symbols-outlined">' + escapeHtml(item.icon) + '</span><span>' + escapeHtml(item.label) + '</span>';
+            menu.appendChild(link);
+        });
+
+        function closeMenu() {
+            toggle.setAttribute("aria-expanded", "false");
+            menu.hidden = true;
+        }
+
+        function openMenu() {
+            toggle.setAttribute("aria-expanded", "true");
+            menu.hidden = false;
+        }
+
+        toggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (menu.hidden) {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrapper.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        });
+
+        wrapper.appendChild(toggle);
+        wrapper.appendChild(menu);
+        passiveButton.replaceWith(wrapper);
+    }
+
+    function initTransactionalTopbarMenu() {
+        if (!APP.pages || document.querySelector(".task-form-header-menu")) {
+            return;
+        }
+
+        var passiveButton = document.querySelector(".topbar-transactional .topbar-icon-button.is-passive");
+        if (!passiveButton) {
+            return;
+        }
+
+        var wrapper = document.createElement("div");
+        wrapper.className = "topbar-menu is-transactional-menu";
+
+        var toggle = passiveButton.cloneNode(true);
+        toggle.classList.remove("is-passive");
+        toggle.setAttribute("aria-label", "メニュー");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.removeAttribute("disabled");
+        toggle.style.pointerEvents = "";
+
+        var menu = document.createElement("div");
+        menu.className = "topbar-dropdown";
+        menu.hidden = true;
+
+        [
+            { href: APP.pages.home, icon: "checklist", label: "タスク" },
+            { href: APP.pages.calendar, icon: "calendar_month", label: "カレンダー" },
+            { href: APP.pages.stats, icon: "bar_chart", label: "統計" },
+            { href: APP.pages.feed, icon: "rss_feed", label: "FEED" },
+            { href: APP.pages.settings, icon: "settings", label: "設定" }
+        ].forEach(function (item) {
+            if (!item.href) {
+                return;
+            }
+
+            var link = document.createElement("a");
+            link.className = "topbar-dropdown-link";
+            link.href = item.href;
+            link.innerHTML = '<span class="material-symbols-outlined">' + escapeHtml(item.icon) + '</span><span>' + escapeHtml(item.label) + '</span>';
+            menu.appendChild(link);
+        });
+
+        function closeMenu() {
+            toggle.setAttribute("aria-expanded", "false");
+            menu.hidden = true;
+        }
+
+        function openMenu() {
+            toggle.setAttribute("aria-expanded", "true");
+            menu.hidden = false;
+        }
+
+        toggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (menu.hidden) {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!wrapper.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        });
+
+        wrapper.appendChild(toggle);
+        wrapper.appendChild(menu);
+        passiveButton.replaceWith(wrapper);
+    }
+
     window.MitchieApp = {
         APP: APP,
         apiFetch: apiFetch,
@@ -212,6 +375,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         var currentTheme = document.documentElement.getAttribute("data-theme") || "light";
         setTheme(currentTheme);
+        initTopbarMenu();
+        initTransactionalTopbarMenu();
         initAppSplash();
     });
 }());

@@ -14,16 +14,57 @@
         historyOffset: 0,
         publicHasMore: false,
         historyHasMore: false,
-        limit: 20,
+        limit: 5,
         selectedTemplates: [],
-        selectedIconKey: null
+        selectedIconKey: null,
+        selectedMessageVariant: "default",
+        featuredTemplateIds: []
     };
 
     function escape(value) {
         return app.escapeHtml(value || "");
     }
 
-    function renderPost(post, isHistory) {
+    function shuffle(items) {
+        var copy = items.slice();
+        for (var index = copy.length - 1; index > 0; index -= 1) {
+            var swapIndex = Math.floor(Math.random() * (index + 1));
+            var temp = copy[index];
+            copy[index] = copy[swapIndex];
+            copy[swapIndex] = temp;
+        }
+        return copy;
+    }
+
+    function pickFeaturedTemplateIds(templates) {
+        var excluded = {
+            read_book: true,
+            watched_movie: true
+        };
+        var pool = templates.filter(function (template) {
+            return !excluded[template.id];
+        });
+        return shuffle(pool).slice(0, 3).map(function (template) {
+            return template.id;
+        });
+    }
+
+    function splitTemplates(templates) {
+        var featured = [];
+        var extra = [];
+
+        templates.forEach(function (template) {
+            if (state.featuredTemplateIds.indexOf(template.id) !== -1) {
+                featured.push(template);
+            } else {
+                extra.push(template);
+            }
+        });
+
+        return { featured: featured, extra: extra };
+    }
+
+    function renderPost(post, isHistory, entering) {
         var templates = (post.template_lines || []).map(function (line) {
             return '<span class="feed-post-template">' + escape(line) + "</span>";
         }).join("");
@@ -33,7 +74,7 @@
             : "";
 
         return [
-            '<article class="feed-post-card" data-feed-post-id="' + post.id + '">',
+            '<article class="feed-post-card' + (entering ? " is-entering" : "") + '" data-feed-post-id="' + post.id + '">',
             '  <div class="feed-post-head">',
             '    <div class="feed-post-icon"><img src="' + escape(post.icon_url) + '" alt=""></div>',
             '    <div class="feed-post-user">',
@@ -43,15 +84,37 @@
             "  </div>",
             '  <div class="feed-post-body">',
             '    <p>' + escape(post.auto_summary) + "</p>",
-            post.category_summary ? '<p class="feed-post-meta">' + escape(post.category_summary) + "</p>" : "",
-            templates ? '<div class="feed-post-templates">' + templates + "</div>" : "",
+            templates ? ('<div class="feed-post-templates">' + templates + "</div>") : "",
             "  </div>",
             '  <div class="feed-post-foot">',
-            '    <span class="feed-post-meta">完了 ' + escape(String(post.completed_count)) + '件</span>',
+            '    <div class="feed-post-actions">',
+            '      <button class="feed-like-button' + (post.liked_by_viewer ? " is-active" : "") + '" type="button" data-feed-like="' + post.id + '">',
+            '        <span class="material-symbols-outlined">thumb_up</span>',
+            '        <span>' + escape(String(post.likes_count || 0)) + "</span>",
+            "      </button>",
+            "    </div>",
             deleteButton,
             "  </div>",
             "</article>"
         ].join("");
+    }
+
+    function appendPosts(list, items, isHistory, entering) {
+        if (!items.length) {
+            return;
+        }
+
+        list.insertAdjacentHTML("beforeend", items.map(function (post) {
+            return renderPost(post, isHistory, entering);
+        }).join(""));
+
+        if (entering) {
+            window.requestAnimationFrame(function () {
+                list.querySelectorAll(".feed-post-card.is-entering").forEach(function (card) {
+                    card.classList.remove("is-entering");
+                });
+            });
+        }
     }
 
     function updateTabUI() {
@@ -63,17 +126,41 @@
         });
     }
 
+    function renderMessageOptions(options) {
+        var select = document.getElementById("feedMessageSelect");
+        if (!select) {
+            return;
+        }
+
+        if (!options.length) {
+            select.innerHTML = "";
+            return;
+        }
+
+        if (!state.selectedMessageVariant) {
+            state.selectedMessageVariant = options[0].id;
+        }
+
+        select.innerHTML = options.map(function (option) {
+            var selected = option.id === state.selectedMessageVariant ? " selected" : "";
+            return '<option value="' + escape(option.id) + '"' + selected + ">" + escape(option.text) + "</option>";
+        }).join("");
+    }
+
     function renderComposeState(data) {
         var box = document.getElementById("feedComposeState");
         var form = document.getElementById("feedComposeForm");
-        var summary = document.getElementById("feedAutoSummary");
+
+        if (!box || !form) {
+            return;
+        }
 
         state.status = data;
         box.innerHTML = "";
         form.hidden = true;
 
-        if (summary) {
-            summary.textContent = data.auto_summary || "今日は一歩だけ前に進めました";
+        if (data.default_message_variant) {
+            state.selectedMessageVariant = data.default_message_variant;
         }
 
         if (!data.authenticated) {
@@ -86,17 +173,25 @@
             return;
         }
 
-        if (data.posted_today && data.post) {
-            box.innerHTML = '<p>今日は投稿済みです。</p><p>' + escape(data.post.auto_summary) + "</p>";
+        if (!data.can_post) {
+            if (data.reason === "daily_limit_reached") {
+                box.innerHTML = "<p>今日は2回投稿済みです。</p>";
+                return;
+            }
+
+            box.innerHTML = "<p>今日はまだ投稿できません。完了したタスクが1件以上ある日に共有できます。</p>";
             return;
         }
 
-        if (!data.can_post) {
-            box.innerHTML = '<p>今日はまだ投稿していません。完了タスクが1件以上ある日に共有できます。</p>';
-            return;
+        if (data.today_posts_count > 0) {
+            box.innerHTML = "<p>今日は" + escape(String(data.today_posts_count)) + "回投稿済みです。あと" + escape(String(data.remaining_posts || 0)) + "回共有できます。</p>";
+        } else {
+            box.innerHTML = "<p>今日はまだ投稿していません。気軽に1回共有してみましょう。</p>";
         }
 
         form.hidden = false;
+        renderMessageOptions(data.message_options || []);
+        renderComposeConfirm();
     }
 
     function renderIcons(icons) {
@@ -110,31 +205,79 @@
         }
 
         root.innerHTML = icons.map(function (icon) {
-            var active = state.selectedIconKey === icon.key ? " is-active" : "";
+            var active = state.selectedIconKey === icon.key;
             return [
-                '<label class="feed-icon-option' + active + '">',
-                '  <input type="radio" name="feedIcon" value="' + escape(icon.key) + '"' + (active ? " checked" : "") + '>',
-                '  <img src="' + escape(icon.url) + '" alt="">',
-                '  <span>' + escape(icon.label) + "</span>",
+                '<label class="feed-icon-option' + (active ? " is-active" : "") + '">',
+                '  <input type="radio" name="feedIcon" value="' + escape(icon.key) + '"' + (active ? " checked" : "") + ">",
+                '  <img src="' + escape(icon.url) + '" alt="' + escape(icon.label) + '">',
                 "</label>"
             ].join("");
         }).join("");
     }
 
-    function renderTemplates(templates) {
-        var root = document.getElementById("feedTemplateGrid");
+    function renderTemplateGroup(root, templates) {
         if (!root) {
             return;
         }
 
         root.innerHTML = templates.map(function (template) {
-            var active = state.selectedTemplates.indexOf(template.text) !== -1 ? " is-active" : "";
-            return '<button class="feed-template-chip' + active + '" type="button" data-template-text="' + escape(template.text) + '">' + escape(template.text) + "</button>";
+            var active = state.selectedTemplates.indexOf(template.text) !== -1;
+            return '<button class="feed-template-chip' + (active ? " is-active" : "") + '" type="button" data-template-text="' + escape(template.text) + '">' + escape(template.text) + "</button>";
         }).join("");
+    }
+
+    function renderTemplates(templates) {
+        var featuredRoot = document.getElementById("feedTemplateGrid");
+        var extraRoot = document.getElementById("feedTemplateExtra");
+        var details = document.getElementById("feedTemplateMore");
+
+        if (!featuredRoot || !extraRoot || !details) {
+            return;
+        }
+
+        if (!state.featuredTemplateIds.length) {
+            state.featuredTemplateIds = pickFeaturedTemplateIds(templates);
+        }
+
+        var groups = splitTemplates(templates);
+        renderTemplateGroup(featuredRoot, groups.featured);
+        renderTemplateGroup(extraRoot, groups.extra);
+        details.hidden = groups.extra.length === 0;
+        renderComposeConfirm();
+    }
+
+    function renderComposeConfirm() {
+        var root = document.getElementById("feedComposeConfirm");
+        var select = document.getElementById("feedMessageSelect");
+        var lines = [];
+        var messageText = "";
+
+        if (!root) {
+            return;
+        }
+
+        if (select && select.selectedIndex >= 0) {
+            messageText = select.options[select.selectedIndex].text || "";
+        }
+
+        if (messageText) {
+            lines.push('<p><strong>この内容で共有します</strong></p>');
+            lines.push('<p>' + escape(messageText) + "</p>");
+        }
+
+        if (state.selectedTemplates.length) {
+            lines.push('<div class="feed-compose-confirm-tags">' + state.selectedTemplates.map(function (line) {
+                return '<span class="feed-post-template">' + escape(line) + "</span>";
+            }).join("") + "</div>");
+        }
+
+        root.innerHTML = lines.join("");
+        root.hidden = lines.length === 0;
     }
 
     async function loadStatus() {
         var data = await app.apiFetch(APP.routes.feedStatus);
+        state.featuredTemplateIds = pickFeaturedTemplateIds(data.templates || []);
         renderComposeState(data);
         renderIcons(data.icons || []);
         renderTemplates(data.templates || []);
@@ -149,18 +292,21 @@
         var list = document.getElementById("feedPublicList");
         var empty = document.getElementById("feedPublicEmpty");
         var more = document.getElementById("feedPublicMore");
+        var items = data.items || [];
+
+        if (!list || !empty || !more) {
+            return;
+        }
 
         if (reset) {
             list.innerHTML = "";
         }
 
-        list.insertAdjacentHTML("beforeend", (data.items || []).map(function (post) {
-            return renderPost(post, false);
-        }).join(""));
+        appendPosts(list, items, false, !reset && items.length > 0);
 
-        state.publicOffset += (data.items || []).length;
+        state.publicOffset += items.length;
         state.publicHasMore = Boolean(data.paging && data.paging.has_more);
-        empty.hidden = (data.items || []).length > 0 || state.publicOffset > 0;
+        empty.hidden = items.length > 0 || state.publicOffset > 0;
         more.hidden = !state.publicHasMore;
     }
 
@@ -179,14 +325,16 @@
     }
 
     async function loadHistorySummary() {
+        var root = document.getElementById("feedHistorySummary");
+        if (!root) {
+            return;
+        }
+
         try {
             var data = await app.apiFetch(APP.routes.historySummary);
             renderHistorySummary(data);
         } catch (error) {
-            var root = document.getElementById("feedHistorySummary");
-            if (root) {
-                root.innerHTML = '<article class="feed-history-stat"><span class="feed-post-meta">履歴を見るにはログインが必要です。</span><strong>--</strong></article>';
-            }
+            root.innerHTML = '<article class="feed-history-stat"><span class="feed-post-meta">履歴を見るにはログインが必要です。</span><strong>--</strong></article>';
         }
     }
 
@@ -195,6 +343,10 @@
         var empty = document.getElementById("feedHistoryEmpty");
         var more = document.getElementById("feedHistoryMore");
 
+        if (!list || !empty || !more) {
+            return;
+        }
+
         if (reset) {
             state.historyOffset = 0;
             list.innerHTML = "";
@@ -202,18 +354,35 @@
 
         try {
             var data = await app.apiFetch(APP.routes.historyList + "?limit=" + state.limit + "&offset=" + state.historyOffset);
-            list.insertAdjacentHTML("beforeend", (data.items || []).map(function (post) {
-                return renderPost(post, true);
-            }).join(""));
-            state.historyOffset += (data.items || []).length;
+            var items = data.items || [];
+            appendPosts(list, items, true, !reset && items.length > 0);
+            state.historyOffset += items.length;
             state.historyHasMore = Boolean(data.paging && data.paging.has_more);
-            empty.hidden = (data.items || []).length > 0 || state.historyOffset > 0;
+            empty.hidden = items.length > 0 || state.historyOffset > 0;
             more.hidden = !state.historyHasMore;
         } catch (error) {
             empty.hidden = false;
-            empty.querySelector("p").textContent = "履歴を見るにはログインが必要です。";
+            var message = empty.querySelector("p");
+            if (message) {
+                message.textContent = "履歴を見るにはログインが必要です。";
+            }
             more.hidden = true;
         }
+    }
+
+    function updateRenderedPost(post) {
+        document.querySelectorAll('[data-feed-post-id="' + post.id + '"]').forEach(function (card) {
+            var button = card.querySelector("[data-feed-like]");
+            if (!button) {
+                return;
+            }
+
+            button.classList.toggle("is-active", Boolean(post.liked_by_viewer));
+            var count = button.querySelector("span:last-child");
+            if (count) {
+                count.textContent = String(post.likes_count || 0);
+            }
+        });
     }
 
     async function submitPost() {
@@ -221,7 +390,8 @@
             method: "POST",
             body: {
                 template_lines: state.selectedTemplates,
-                icon_key: state.selectedIconKey
+                icon_key: state.selectedIconKey,
+                message_variant: state.selectedMessageVariant
             }
         });
 
@@ -244,78 +414,139 @@
         await loadHistory(true);
     }
 
+    async function toggleLike(id) {
+        if (!state.status || !state.status.authenticated) {
+            app.showToast("いいねするにはログインが必要です。");
+            window.setTimeout(function () {
+                window.location.href = APP.pages.settings;
+            }, 400);
+            return;
+        }
+
+        var data = await app.apiFetch(APP.routes.feedLike + "?id=" + encodeURIComponent(id), {
+            method: "POST"
+        });
+
+        if (data.post) {
+            updateRenderedPost(data.post);
+        }
+
+        if (data.message) {
+            app.showToast(
+                data.message,
+                data.post && data.post.owned_by_viewer && data.post.liked_by_viewer
+                    ? { icon: APP.assets && APP.assets.mitchie01 ? APP.assets.mitchie01 : "" }
+                    : undefined
+            );
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
+        var composeForm = document.getElementById("feedComposeForm");
+        var modeTabs = document.getElementById("feedModeTabs");
+        var messageSelect = document.getElementById("feedMessageSelect");
+        var iconGrid = document.getElementById("feedIconGrid");
+        var publicMore = document.getElementById("feedPublicMore");
+        var historyMore = document.getElementById("feedHistoryMore");
+
         updateTabUI();
 
-        document.getElementById("feedComposeForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            submitPost().catch(function (error) {
-                console.error(error);
-                app.showToast(error.message);
+        if (composeForm) {
+            composeForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                submitPost().catch(function (error) {
+                    console.error(error);
+                    app.showToast(error.message);
+                });
             });
-        });
 
-        document.getElementById("feedModeTabs").addEventListener("click", function (event) {
-            var button = event.target.closest("[data-feed-tab]");
-            if (!button) {
+            composeForm.addEventListener("click", function (event) {
+                var chip = event.target.closest("[data-template-text]");
+                if (!chip) {
+                    return;
+                }
+
+                var text = chip.getAttribute("data-template-text");
+                var index = state.selectedTemplates.indexOf(text);
+
+                if (index !== -1) {
+                    state.selectedTemplates.splice(index, 1);
+                } else if (state.selectedTemplates.length < 3) {
+                    state.selectedTemplates.push(text);
+                } else {
+                    app.showToast("定型文は3つまで選べます。");
+                }
+
+                renderTemplates(state.status ? (state.status.templates || []) : []);
+                renderComposeConfirm();
+            });
+        }
+
+        if (modeTabs) {
+            modeTabs.addEventListener("click", function (event) {
+                var button = event.target.closest("[data-feed-tab]");
+                if (!button) {
+                    return;
+                }
+                state.tab = button.getAttribute("data-feed-tab");
+                updateTabUI();
+            });
+        }
+
+        if (messageSelect) {
+            messageSelect.addEventListener("change", function (event) {
+                state.selectedMessageVariant = event.target.value;
+                renderComposeConfirm();
+            });
+        }
+
+        if (iconGrid) {
+            iconGrid.addEventListener("click", function (event) {
+                var option = event.target.closest(".feed-icon-option");
+                if (!option) {
+                    return;
+                }
+                state.selectedIconKey = option.querySelector("input").value;
+                renderIcons(state.status ? (state.status.icons || []) : []);
+                renderComposeConfirm();
+            });
+        }
+
+        if (publicMore) {
+            publicMore.addEventListener("click", function () {
+                loadPublic(false).catch(function (error) {
+                    console.error(error);
+                    app.showToast(error.message);
+                });
+            });
+        }
+
+        if (historyMore) {
+            historyMore.addEventListener("click", function () {
+                loadHistory(false).catch(function (error) {
+                    console.error(error);
+                    app.showToast(error.message);
+                });
+            });
+        }
+
+        document.addEventListener("click", function (event) {
+            var deleteButton = event.target.closest("[data-feed-delete]");
+            if (deleteButton) {
+                deletePost(deleteButton.getAttribute("data-feed-delete")).catch(function (error) {
+                    console.error(error);
+                    app.showToast(error.message);
+                });
                 return;
             }
-            state.tab = button.getAttribute("data-feed-tab");
-            updateTabUI();
-        });
 
-        document.getElementById("feedIconGrid").addEventListener("click", function (event) {
-            var option = event.target.closest(".feed-icon-option");
-            if (!option) {
-                return;
+            var likeButton = event.target.closest("[data-feed-like]");
+            if (likeButton) {
+                toggleLike(likeButton.getAttribute("data-feed-like")).catch(function (error) {
+                    console.error(error);
+                    app.showToast(error.message);
+                });
             }
-            state.selectedIconKey = option.querySelector("input").value;
-            renderIcons(state.status ? state.status.icons || [] : []);
-        });
-
-        document.getElementById("feedTemplateGrid").addEventListener("click", function (event) {
-            var chip = event.target.closest("[data-template-text]");
-            if (!chip) {
-                return;
-            }
-
-            var text = chip.getAttribute("data-template-text");
-            var index = state.selectedTemplates.indexOf(text);
-
-            if (index !== -1) {
-                state.selectedTemplates.splice(index, 1);
-            } else if (state.selectedTemplates.length < 3) {
-                state.selectedTemplates.push(text);
-            } else {
-                app.showToast("定型文は3つまで選択できます。");
-            }
-
-            renderTemplates(state.status ? state.status.templates || [] : []);
-        });
-
-        document.getElementById("feedPublicMore").addEventListener("click", function () {
-            loadPublic(false).catch(function (error) {
-                console.error(error);
-                app.showToast(error.message);
-            });
-        });
-
-        document.getElementById("feedHistoryMore").addEventListener("click", function () {
-            loadHistory(false).catch(function (error) {
-                console.error(error);
-                app.showToast(error.message);
-            });
-        });
-
-        document.getElementById("feedHistoryList").addEventListener("click", function (event) {
-            var button = event.target.closest("[data-feed-delete]");
-            if (!button) {
-                return;
-            }
-            deletePost(button.getAttribute("data-feed-delete")).catch(function (error) {
-                console.error(error);
-                app.showToast(error.message);
-            });
         });
 
         Promise.all([

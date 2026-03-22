@@ -127,6 +127,27 @@ function validate_feed_template_lines(array $lines): array
     return $selected;
 }
 
+function validate_feed_message_variant(string $variant, array $activity): string
+{
+    $variant = trim($variant);
+    $options = feed_message_options((int) ($activity['completed_count'] ?? 0));
+
+    if ($options === []) {
+        throw new InvalidArgumentException('完了したタスクがある日にのみ投稿できます。');
+    }
+
+    $allowed = array_column($options, 'id');
+    if ($variant === '') {
+        return $allowed[0];
+    }
+
+    if (!in_array($variant, $allowed, true)) {
+        throw new InvalidArgumentException('投稿メッセージの選択が正しくありません。');
+    }
+
+    return $variant;
+}
+
 function validate_feed_icon_key(string $iconKey): string
 {
     $iconKey = trim($iconKey);

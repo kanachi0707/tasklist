@@ -1,0 +1,20 @@
+{
+  "name": "みっちーToDo!",
+  "short_name": "みっちーToDo!",
+  "start_url": "./index.php",
+  "display": "standalone",
+  "background_color": "#f4f0fb",
+  "theme_color": "#efe8fb",
+  "icons": [
+    {
+      "src": "./image/icon/icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./image/icon/icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -5,6 +5,8 @@ function feed_template_options(): array
     return [
         ['id' => 'small_step', 'text' => '小さくても前進できてよかった'],
         ['id' => 'one_step', 'text' => '今日も一歩前へ'],
+        ['id' => 'read_book', 'text' => '本を読みました'],
+        ['id' => 'watched_movie', 'text' => '映画を観ました'],
         ['id' => 'steady', 'text' => '少しずつ積み重ねていく'],
         ['id' => 'consistent', 'text' => 'コツコツ継続中'],
         ['id' => 'did_what_i_could', 'text' => 'できることをやった'],
@@ -42,6 +44,25 @@ function require_authenticated_user(): array
 function user_has_username(array $user): bool
 {
     return isset($user['username']) && is_string($user['username']) && $user['username'] !== '';
+}
+
+function max_daily_feed_posts(): int
+{
+    return 2;
+}
+
+function feed_message_options(int $count): array
+{
+    if ($count <= 0) {
+        return [];
+    }
+
+    return [
+        ['id' => 'default', 'text' => 'タスクを' . $count . '件進めました'],
+        ['id' => 'gentle', 'text' => '少しタスクを進めました'],
+        ['id' => 'today_count', 'text' => '今日はタスクを' . $count . '件進めました'],
+        ['id' => 'effort', 'text' => 'がんばってタスクを' . $count . '件進めました'],
+    ];
 }
 
 function today_bounds(): array
@@ -104,41 +125,30 @@ function build_category_summary(array $parts): ?string
 
     $labels = [];
     foreach (array_slice($parts, 0, 3) as $part) {
-        $labels[] = $part['name'] . 'を' . $part['count'] . '件';
+        $labels[] = $part['name'] . ' ' . $part['count'] . '件';
     }
 
-    return implode('、', $labels);
+    return implode(' / ', $labels);
 }
 
-function build_auto_summary(array $activity): string
+function build_auto_summary(array $activity, ?string $variant = null): string
 {
     $count = (int) ($activity['completed_count'] ?? 0);
-    $parts = $activity['category_parts'] ?? [];
 
     if ($count <= 0) {
         throw new InvalidArgumentException('完了したタスクがある日にのみ投稿できます。');
     }
 
-    if ($count === 1) {
-        return count($parts) === 1 && ($parts[0]['name'] ?? '') !== 'その他'
-            ? '今日は' . $parts[0]['name'] . 'を1件進めました'
-            : '今日は一歩だけ前に進めました';
+    $options = feed_message_options($count);
+    $selectedId = $variant ?: $options[0]['id'];
+
+    foreach ($options as $option) {
+        if ($option['id'] === $selectedId) {
+            return $option['text'];
+        }
     }
 
-    if (count($parts) >= 2) {
-        $first = $parts[0];
-        $second = $parts[1];
-        return '今日は' . $first['name'] . 'を' . $first['count'] . '件、' . $second['name'] . 'を' . $second['count'] . '件進めました';
-    }
-
-    if (count($parts) === 1 && ($parts[0]['count'] ?? 0) >= 2 && ($parts[0]['name'] ?? '') !== 'その他') {
-        return '今日は' . $parts[0]['name'] . 'カテゴリを中心に進めました';
-    }
-
-    return match ($count) {
-        2 => '今日は2件のタスクを終えました',
-        default => '今日は' . $count . '件完了しました',
-    };
+    return $options[0]['text'];
 }
 
 function todays_feed_post(int $userId): ?array
@@ -146,7 +156,10 @@ function todays_feed_post(int $userId): ?array
     $date = today_bounds()['date'];
     $stmt = db()->prepare(
         'SELECT * FROM feed_posts
-         WHERE user_id = :user_id AND post_date = :post_date
+         WHERE user_id = :user_id
+           AND post_date = :post_date
+           AND deleted_at IS NULL
+         ORDER BY created_at DESC, id DESC
          LIMIT 1'
     );
     $stmt->execute([
@@ -158,12 +171,48 @@ function todays_feed_post(int $userId): ?array
     return $row ?: null;
 }
 
+function todays_feed_posts_count(int $userId): int
+{
+    $date = today_bounds()['date'];
+    $stmt = db()->prepare(
+        'SELECT COUNT(*)
+         FROM feed_posts
+         WHERE user_id = :user_id
+           AND post_date = :post_date
+           AND deleted_at IS NULL'
+    );
+    $stmt->execute([
+        'user_id' => $userId,
+        'post_date' => $date,
+    ]);
+
+    return (int) $stmt->fetchColumn();
+}
+
+function next_feed_post_sequence(int $userId, string $postDate): int
+{
+    $stmt = db()->prepare(
+        'SELECT COALESCE(MAX(post_sequence), 0) + 1
+         FROM feed_posts
+         WHERE user_id = :user_id
+           AND post_date = :post_date'
+    );
+    $stmt->execute([
+        'user_id' => $userId,
+        'post_date' => $postDate,
+    ]);
+
+    return max(1, (int) $stmt->fetchColumn());
+}
+
 function serialize_feed_post(array $row, bool $private = false): array
 {
     $icons = feed_icon_options();
     $iconKey = (string) ($row['icon_key'] ?? '01_mitchie');
     $icon = $icons[$iconKey] ?? $icons['01_mitchie'];
     $templateLines = json_decode((string) ($row['template_lines_json'] ?? '[]'), true);
+    $viewer = current_user();
+    $likeState = feed_post_like_state((int) $row['id'], $viewer ? (int) $viewer['id'] : null);
 
     return [
         'id' => (int) $row['id'],
@@ -178,7 +227,88 @@ function serialize_feed_post(array $row, bool $private = false): array
         'created_at' => $row['created_at'],
         'public_until' => $row['public_until'],
         'is_deleted' => $row['deleted_at'] !== null,
+        'owned_by_viewer' => $viewer !== null && (int) $viewer['id'] === (int) $row['user_id'],
+        'likes_count' => $likeState['likes_count'],
+        'liked_by_viewer' => $likeState['liked_by_viewer'],
     ];
+}
+
+function feed_post_like_state(int $postId, ?int $viewerUserId = null): array
+{
+    $sql = 'SELECT COUNT(*) AS likes_count';
+    $params = ['post_id' => $postId];
+
+    if ($viewerUserId !== null) {
+        $sql .= ', SUM(CASE WHEN user_id = :viewer_user_id THEN 1 ELSE 0 END) AS liked_count';
+        $params['viewer_user_id'] = $viewerUserId;
+    }
+
+    $sql .= ' FROM feed_post_likes WHERE feed_post_id = :post_id';
+
+    $stmt = db()->prepare($sql);
+    $stmt->execute($params);
+    $row = $stmt->fetch() ?: [];
+
+    return [
+        'likes_count' => (int) ($row['likes_count'] ?? 0),
+        'liked_by_viewer' => $viewerUserId !== null && (int) ($row['liked_count'] ?? 0) > 0,
+    ];
+}
+
+function find_feed_post_or_fail(int $id): array
+{
+    $stmt = db()->prepare(
+        'SELECT fp.*, u.username
+         FROM feed_posts fp
+         INNER JOIN users u ON u.id = fp.user_id
+         WHERE fp.id = :id
+           AND fp.deleted_at IS NULL
+         LIMIT 1'
+    );
+    $stmt->execute(['id' => $id]);
+    $post = $stmt->fetch();
+
+    if (!$post) {
+        json_error('投稿が見つかりません。', 404);
+    }
+
+    return $post;
+}
+
+function toggle_feed_like(int $postId, int $userId): array
+{
+    find_feed_post_or_fail($postId);
+
+    $stmt = db()->prepare(
+        'SELECT id
+         FROM feed_post_likes
+         WHERE feed_post_id = :feed_post_id
+           AND user_id = :user_id
+         LIMIT 1'
+    );
+    $stmt->execute([
+        'feed_post_id' => $postId,
+        'user_id' => $userId,
+    ]);
+    $like = $stmt->fetch();
+
+    if ($like) {
+        db()->prepare('DELETE FROM feed_post_likes WHERE id = :id')->execute([
+            'id' => $like['id'],
+        ]);
+    } else {
+        db()->prepare(
+            'INSERT INTO feed_post_likes (feed_post_id, user_id, created_at)
+             VALUES (:feed_post_id, :user_id, NOW())'
+        )->execute([
+            'feed_post_id' => $postId,
+            'user_id' => $userId,
+        ]);
+    }
+
+    $post = find_feed_post_or_fail($postId);
+
+    return serialize_feed_post($post, (int) $post['user_id'] === $userId);
 }
 
 function feed_public_page(int $limit, int $offset): array

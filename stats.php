@@ -41,7 +41,7 @@ render_page_start('統計', 'stats');
     <div class="section-heading">
         <div>
             <h3>アクティビティ</h3>
-            <p class="stats-subtle">過去7日間の推移</p>
+            <p class="stats-subtle">直近7日間の推移</p>
         </div>
         <div class="chip-row">
             <button class="chip-button is-active" type="button" data-range="7d">7日</button>
@@ -49,7 +49,7 @@ render_page_start('統計', 'stats');
         </div>
     </div>
     <div class="chart-card stats-bars-card">
-        <svg id="statsTrendSvg" viewBox="0 0 640 220" role="img" aria-label="完了推移グラフ"></svg>
+        <svg id="statsTrendSvg" viewBox="0 0 640 220" role="img" aria-label="完了数の推移グラフ"></svg>
         <div class="chart-legend" id="statsTrendLegend"></div>
     </div>
 </section>
@@ -57,18 +57,9 @@ render_page_start('統計', 'stats');
 <section class="stats-breakdown-section">
     <div class="section-heading">
         <div>
-            <h3>カテゴリー別内訳</h3>
+            <h3>カテゴリ別内訳</h3>
         </div>
     </div>
     <div class="breakdown-list" id="statsCategoryList"></div>
-</section>
-
-<section class="stats-insight-note">
-    <div class="icon-wrap"><span class="material-symbols-outlined">lightbulb</span></div>
-    <div>
-        <h3>マインドフルな洞察</h3>
-        <p>午後の時間帯にタスクが進みやすい傾向があります。重要な作業を後半へ寄せると集中しやすくなります。</p>
-        <p class="stats-total-line">総タスク数 <strong id="statsTotalCount">0</strong></p>
-    </div>
 </section>
 <?php render_page_end('stats', ['auth.js', 'stats.js']); ?>

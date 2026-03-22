@@ -29,6 +29,7 @@
             ? "priority-dot high"
             : (todo.priority === "low" ? "priority-dot low" : "priority-dot medium");
         var isDoing = Boolean(todo.is_doing) && !todo.is_done;
+        var modeLabel = todo.is_done ? "DONE" : (isDoing ? "DOING" : "TODO");
 
         return [
             '<article class="task-card' + (todo.is_done ? ' is-done' : '') + (isDoing ? ' is-doing' : '') + '" data-todo-id="' + todo.id + '">',
@@ -39,8 +40,8 @@
             '    <div class="task-card-heading">',
             '      <h3 class="task-card-title">' + app.escapeHtml(todo.title) + '</h3>',
             '      <div class="task-card-tools">',
-            '        <button class="todo-action-button todo-mode-button' + (isDoing ? ' is-active' : '') + '" type="button" data-action="doing" aria-pressed="' + (isDoing ? 'true' : 'false') + '" aria-label="DOINGモード切り替え">',
-            '          <span class="todo-mode-button-text">' + (isDoing ? 'DOING' : 'TODO') + '</span>',
+            '        <button class="todo-action-button todo-mode-button' + (isDoing ? ' is-active' : '') + (todo.is_done ? ' is-done-mode' : '') + '" type="button" data-action="doing" aria-pressed="' + (isDoing ? 'true' : 'false') + '" aria-label="' + (todo.is_done ? '完了済み' : 'DOINGモード切り替え') + '"' + (todo.is_done ? ' disabled' : '') + '>',
+            '          <span class="todo-mode-button-text">' + modeLabel + '</span>',
             "        </button>",
             '        <a class="todo-action-button todo-action-icon" href="' + APP.pages.taskForm + '?id=' + todo.id + '" aria-label="編集">',
             '          <span class="material-symbols-outlined">edit</span>',

@@ -7,6 +7,7 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/response.php';
 require_once __DIR__ . '/csrf.php';
 require_once __DIR__ . '/validators.php';
+require_once __DIR__ . '/categories.php';
 require_once __DIR__ . '/guest.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/feed.php';
